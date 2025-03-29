@@ -20,5 +20,9 @@ class DatabaseSeeder extends Seeder
             'identity' => fake()->randomDigit(),
             'role' => 'ADMIN',
         ]);
+
+        $this->call([
+            CategorySeeder::class,
+        ]);
     }
 }

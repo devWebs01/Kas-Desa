@@ -37,9 +37,9 @@ $destroy = function (user $user) {
         @volt
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route("users.create") }}" class="btn btn-dark">Tambah
+                    <a href="{{ route("users.create") }}" class="btn btn-primary mb-3">Tambah
                         Akun</a>
-                    <div class="table-responsive border rounded px-3">
+                    <div class="table-responsive border rounded p-3">
                         <table class="table text-center text-nowrap">
                             <thead>
                                 <tr>

@@ -8,27 +8,27 @@
             text-align: center;
         }
 
-        .pagination .page-item.active .page-link {
-            background-color: black;
-            border-color: black;
-            color: #fff;
-        }
+        /* .pagination .page-item.active .page-link {
+                                    background-color: black;
+                                    border-color: black;
+                                    color: #fff;
+                                }
 
-        .pagination .page-item .page-link:hover {
-            background-color: #e4606d;
-            border-color: #e4606d;
-            color: #fff;
-        }
+                                .pagination .page-item .page-link:hover {
+                                    background-color: #e4606d;
+                                    border-color: #e4606d;
+                                    color: #fff;
+                                }
 
-        .pagination .page-item .page-link {
-            color: black;
-            border: 1px solid black;
-        }
+                                .pagination .page-item .page-link {
+                                    color: black;
+                                    border: 1px solid black;
+                                }
 
-        .pagination .page-item.disabled .page-link {
-            color: #aaa;
-            background-color: #f8f9fa;
-        }
+                                .pagination .page-item.disabled .page-link {
+                                    color: #aaa;
+                                    background-color: #f8f9fa;
+                                } */
     </style>
 @endpush
 

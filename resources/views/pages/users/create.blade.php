@@ -20,10 +20,12 @@ rules([
     "role" => "required",
 ]);
 
-$create = function () {
+$store = function () {
     $validateData = $this->validate();
 
-    $validateData["avatar"] = $this->avatar->store("public/avatar");
+    if ($this->avatar) {
+        $validateData["avatar"] = $this->avatar->store("public/avatar");
+    }
 
     $validateData["password"] = bcrypt($this->password);
 
@@ -58,7 +60,7 @@ $create = function () {
             </div>
 
             <div class="card-body">
-                <form wire:submit="create">
+                <form wire:submit="store">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -137,7 +139,7 @@ $create = function () {
 
                     <div class="row mb-3">
                         <div class="col-md">
-                            <button type="submit" class="btn btn-dark">
+                            <button type="submit" class="btn btn-primary">
                                 Simpan
                             </button>
                         </div>
