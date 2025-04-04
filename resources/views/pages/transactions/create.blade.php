@@ -4,19 +4,22 @@ use App\Models\Transaction;
 use App\Models\Category;
 use App\Models\Item;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
-use function Livewire\Volt\{state, rules, usesFileUploads};
+use function Livewire\Volt\{state, rules, usesFileUploads, computed};
 use function Laravel\Folio\name;
 
 usesFileUploads();
 
 name("transactions.create");
 
+state(["category_id"])->url();
+
 state([
     // transaction field
-    "category_id",
     "title",
-    "type",
     "date",
+    "type",
+    "total",
+
     // "status",
 
     // item field
@@ -37,31 +40,39 @@ rules([
 $store = function () {
     $validateData = $this->validate();
 
-    $transaction = transaction::create($validateData);
+    // Cari transaksi terakhir (jika ada)
+    $lastTransaction = Transaction::latest("id")->first();
+    $previousTotal = $lastTransaction ? $lastTransaction->total : 0;
 
-    // Jika ada item detail, simpan masing-masing sebagai relasi ke transaksi
+    // Buat transaksi baru dulu, total kosong dulu
+    $transaction = Transaction::create(array_merge($validateData, ["total" => 0]));
+
+    // Validasi item
+    $this->validate([
+        "items" => "nullable|array",
+        "items.*.description" => "required_with:items|string",
+        "items.*.amount" => "required_with:items|numeric|min:0",
+    ]);
+
+    $itemTotal = 0;
+
+    // Simpan item
     if (!empty($this->items)) {
-        $this->validate([
-            // Jika ingin validasi detail item juga, gunakan sintaks array "items.*"
-            "items" => "nullable|array",
-            "items.*.description" => "required_with:items|string",
-            "items.*.amount" => "required_with:items|numeric|min:0",
-        ]);
-
         foreach ($this->items as $item) {
-            // Pastikan field description dan amount telah diisi atau sesuai dengan validasi tambahan
-            Item::create([
-                "transaction_id" => $transaction->id,
+            $transaction->items()->create([
                 "description" => $item["description"],
                 "amount" => $item["amount"],
             ]);
+            $itemTotal += $item["amount"];
         }
     }
 
-    $this->reset();
+    // Hitung total baru berdasarkan tipe transaksi
+    $newTotal = $transaction->type === "DEBIT" ? $previousTotal + $itemTotal : $previousTotal - $itemTotal;
 
-    LivewireAlert::text("Data berhasil di proses.")->success()->toast()->show();
+    $transaction->update(["total" => $newTotal]);
 
+    LivewireAlert::text("Data berhasil diproses.")->success()->toast()->show();
     $this->redirectRoute("transactions.index");
 };
 
@@ -75,6 +86,20 @@ $addItem = function () {
 $removeItem = function ($index) {
     array_splice($this->items, $index, 1);
 };
+
+$typeTransaction = computed(function () {
+    if ($this->category_id) {
+        $category = Category::find($this->category_id)->name;
+
+        if ($category === "Pembelanjaan") {
+            return $this->type = "CREDIT";
+        } elseif ($category === "Pendapatan") {
+            return $this->type = "DEBIT";
+        }
+    } else {
+        return "";
+    }
+});
 
 ?>
 
@@ -137,8 +162,8 @@ $removeItem = function ($index) {
                                         <div class="mb-3">
                                             <label for="category_id" class="form-label">Kategori</label>
                                             <select class="form-select @error("category_id") is-invalid @enderror"
-                                                wire:model="category_id" id="category_id">
-                                                <option selected>Pilih Satu</option>
+                                                wire:model.live="category_id" id="category_id">
+                                                <option value='' selected>Pilih Satu</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
@@ -148,14 +173,21 @@ $removeItem = function ($index) {
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <small class="d-none"> {{ $this->typeTransaction }}</small>
+
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="type" class="form-label">Jenis Transaksi</label>
                                             <select class="form-select @error("type") is-invalid @enderror"
-                                                wire:model="type" id="type">
-                                                <option selected>Pilih Satu</option>
-                                                <option value="DEBIT">Debit</option>
-                                                <option value="CREDIT">Kredit</option>
+                                                wire:model="type" id="type"
+                                                {{ $category_id === null ? "disabled" : "" }}>
+                                                <option>Pilih Satu</option>
+                                                <option value="DEBIT">Debit
+                                                </option>
+                                                <option value="CREDIT">
+                                                    Kredit
+                                                </option>
                                             </select>
                                             @error("type")
                                                 <small class="form-text text-danger">{{ $message }}</small>
@@ -187,10 +219,10 @@ $removeItem = function ($index) {
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="description_{{ $index }}"
-                                                    class="form-label">Deskripsi</label>
+                                                    class="form-label">keterangan</label>
                                                 <textarea class="form-control @error("items." . $index . ".description") is-invalid @enderror"
                                                     wire:model="items.{{ $index }}.description" id="description_{{ $index }}"
-                                                    placeholder="Masukkan deskripsi..."></textarea>
+                                                    placeholder="Masukkan keterangan..."></textarea>
                                                 @error("items." . $index . ".description")
                                                     <small class="form-text text-danger">{{ $message }}</small>
                                                 @enderror
@@ -212,9 +244,9 @@ $removeItem = function ($index) {
                                         </div>
 
                                         <!-- Remove Button -->
-                                        <div class="col-md">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
-                                                <label class="form-label text-white">X</label>
+                                                <label class="form-label text-white">Hapus</label>
                                                 <button type="button" wire:click="removeItem({{ $index }})"
                                                     class="btn btn-danger">
                                                     X

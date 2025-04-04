@@ -71,6 +71,16 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
+
+                        <!-- Breadcrumb -->
+                        @if (isset($header))
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    {{ $header }}
+                                </ol>
+                            </nav>
+                        @endif
+
                         {{ $slot }}
                     </div>
                     <!-- / Content -->

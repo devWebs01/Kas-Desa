@@ -17,7 +17,7 @@ rules([
     "password" => "required|min:6",
     "identity" => "required",
     "avatar" => "nullable|image",
-    "role" => "required",
+    "role" => "required|in:ADMIN,BENDAHARA",
 ]);
 
 $store = function () {
@@ -132,6 +132,9 @@ $store = function () {
                                     <option value="ADMIN">admin</option>
                                     <option value="BENDAHARA">bendahara</option>
                                 </select>
+                                @error("role")
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 

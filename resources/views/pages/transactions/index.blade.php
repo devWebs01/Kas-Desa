@@ -60,14 +60,14 @@ $destroy = function (transaction $transaction) {
                                 <tr>
                                     <td>{{ ++$no }}</td>
                                     <!-- Ganti property sesuai model, misalnya: name, email, telp -->
-                                    <td>{{ $item->title }}</td>
+                                    <td>{{ $item->category->name }}</td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->type }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td>
                                         <div>
-                                            <a href="{{ route("transactions.edit", ["transaction" => $item->id]) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{{ route("transactions.show", ["transaction" => $item->id]) }}"
+                                                class="btn btn-sm btn-warning">Lihat</a>
                                             <button wire:loading.attr="disabled" wire:click="destroy({{ $item->id }})"
                                                 wire:confirm="Apakah kamu yakin ingin menghapus data ini?"
                                                 class="btn btn-sm btn-danger">

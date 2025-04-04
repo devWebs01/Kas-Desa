@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
             $table->string('description');
             $table->string('amount');
-            $table->string('signature')->nullable();
-            $table->string('signature_code')->nullable();
+            $table->longText('signature')->nullable();
+            $table->longText('signature_code')->nullable();
             $table->string('authorized')->nullable();
             $table->timestamps();
         });

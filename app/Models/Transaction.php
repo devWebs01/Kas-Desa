@@ -15,6 +15,7 @@ class Transaction extends Model
         'type',
         'date',
         'status',
+        'total',
     ];
 
     public function category()

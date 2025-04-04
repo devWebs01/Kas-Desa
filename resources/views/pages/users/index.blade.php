@@ -46,7 +46,7 @@ $destroy = function (user $user) {
                                     <th>No.</th>
                                     <th>Nama</th>
                                     <th>Email</th>
-                                    <th>Telp</th>
+                                    <th>Hak Akses</th>
                                     <th>Opsi</th>
                                 </tr>
                             </thead>
@@ -56,7 +56,7 @@ $destroy = function (user $user) {
                                         <td>{{ ++$no }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td>{{ $item->telp }}</td>
+                                        <td>{{ $item->role }}</td>
                                         <td>
                                             <div>
                                                 <a href="{{ route("users.edit", ["user" => $item->id]) }}"

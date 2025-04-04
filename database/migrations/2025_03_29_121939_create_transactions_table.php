@@ -20,6 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->integer('total')->default(0);
             $table->enum('type', ['DEBIT', 'CREDIT']);
             $table->date('date');
             $table->enum('status', ['PENDING', 'APPROVE']);
