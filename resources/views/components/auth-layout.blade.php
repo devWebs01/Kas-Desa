@@ -25,7 +25,7 @@
     <body>
 
         <section class="min-vh-100 d-flex align-items-center justify-content-center">
-            <div class="container p-lg-0">
+            <div class="container-fluid p-lg-0 mx-5">
                 <div class="row g-0 align-items-center">
                     <div class="col-lg-6">
                         <div class="col-lg-8 mx-auto">
@@ -38,7 +38,7 @@
                     <div class="col-lg-6 d-none d-lg-block">
                         <div class="mt-5 mt-lg-0">
                             <img alt="Ilustrasi Masuk" class="img-fluid"
-                                src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-7c70-61f7-9dc9-3a48738623c1/raw?se=2025-04-12T09%3A29%3A07Z&sp=r&sv=2024-08-04&sr=b&scid=5e178d30-5439-5a6d-9c17-efb2419350bd&skoid=dfdaf859-26f6-4fed-affc-1befb5ac1ac2&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-11T22%3A26%3A43Z&ske=2025-04-12T22%3A26%3A43Z&sks=b&skv=2024-08-04&sig=n3phC6KLTnLJQ9ECr8NakiKF3Lhah5Yl12SXKjlc1zw%3D">
+                                src="{{ asset("assets/img/illustrations/auth-image.png") }}">
                         </div>
                     </div>
                 </div>

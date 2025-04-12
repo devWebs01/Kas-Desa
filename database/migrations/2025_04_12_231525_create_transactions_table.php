@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('category', ['credit', 'debit']);
-            $table->decimal('amount', 8, 2);
+            $table->enum('category', ["credit","debit"]);
+            $table->string('amount');
             $table->string('invoice')->nullable()->unique();
             $table->date('date');
             $table->longText('description');

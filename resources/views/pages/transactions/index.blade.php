@@ -2,24 +2,47 @@
 
 use App\Models\Transaction;
 use function Laravel\Folio\name;
-use function Livewire\Volt\{computed};
+use function Livewire\Volt\{computed, state};
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
-name("transactions.index"); // Contoh: users.index atau posts.index
+name("transactions.index");
 
-// Ambil data dari model, gunakan computed agar data direfresh secara otomatis
-$transactions = computed(function () {
-    return transaction::query()->latest()->get();
+state([
+    "currentMonth" => fn() => Transaction::select(DB::raw("DATE_FORMAT(date, '%Y-%m') as month"))->groupBy("month")->orderBy("month", "desc")->pluck("month")->first() ?? now()->format("Y-m"),
+]);
+
+$availableMonths = computed(function () {
+    return Transaction::select(DB::raw("DATE_FORMAT(date, '%Y-%m') as month"))->groupBy("month")->orderBy("month", "desc")->pluck("month");
 });
 
-// Fungsi untuk menghapus data dengan try-catch
+$transactionsByMonth = computed(function () {
+    return Transaction::query()
+        ->with("recipient")
+        ->whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$this->currentMonth])
+        ->orderBy("date", "asc") // ✅ BENAR
+        ->get();
+});
+
+$previousMonth = function () {
+    $currentIndex = $this->availableMonths->search($this->currentMonth);
+    if ($currentIndex !== false && $currentIndex < $this->availableMonths->count() - 1) {
+        $this->currentMonth = $this->availableMonths[$currentIndex + 1];
+    }
+};
+
+$nextMonth = function () {
+    $currentIndex = $this->availableMonths->search($this->currentMonth);
+    if ($currentIndex > 0) {
+        $this->currentMonth = $this->availableMonths[$currentIndex - 1];
+    }
+};
+
 $destroy = function (Transaction $transaction) {
     try {
         $transaction->delete();
         LivewireAlert::text("Data berhasil di proses.")->success()->toast()->show();
         $this->redirectRoute("transactions.index");
     } catch (\Throwable $e) {
-        // Logging error jika diperlukan
         \Illuminate\Support\Facades\Log::error("Error deleting transaction: " . $e->getMessage(), [
             "trace" => $e->getTraceAsString(),
         ]);
@@ -36,34 +59,41 @@ $destroy = function (Transaction $transaction) {
         <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">Transaksi</a></li>
     </x-slot>
 
-    @include("layouts.datatables")
-
     @volt
+        {{-- Terkait dengan logic Volt --}}
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <a href="{{ route("transactions.create") }}" class="btn btn-primary">Tambah Transaksi</a>
+                <h5 class="mb-0">
+                    {{ \Carbon\Carbon::createFromFormat("Y-m", $currentMonth)->translatedFormat("F Y") }}
+                </h5>
             </div>
+
             <div class="card-body">
-                <div class="table-responsive border rounded p-3">
-                    <table class="table text-center text-nowrap">
+                <div class="table-responsive">
+                    <table class="table text-center table-bordered text-nowrap">
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <!-- Sesuaikan kolom tabel sesuai atribut model -->
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Telp</th>
+                                <th>Tanggal</th>
+                                <th>Debit</th>
+                                <th>Kredit</th>
+                                <th>Penerima</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($this->transactions as $no => $item)
+                            @forelse ($this->transactionsByMonth as $no => $item)
                                 <tr>
-                                    <td>{{ ++$no }}</td>
-                                    <!-- Ganti property sesuai model, misalnya: name, email, telp -->
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->telp }}</td>
+                                    <td>{{ $no + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->date)->format("d M Y") }}</td>
+                                    <td class="text-success">
+                                        {{ $item->category === "debit" ? formatRupiah($item->amount) : "" }}
+                                    </td>
+                                    <td class="text-danger">
+                                        {{ $item->category === "credit" ? formatRupiah($item->amount) : "" }}
+                                    </td>
+                                    <td>{{ $item->recipient->name }}</td>
                                     <td>
                                         <div>
                                             <a href="{{ route("transactions.edit", ["transaction" => $item->id]) }}"
@@ -76,11 +106,28 @@ $destroy = function (Transaction $transaction) {
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6">Tidak ada transaksi bulan ini.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
+
+                    <div class=" mt-2 d-flex justify-content-between align-items-center mt-3">
+                        <button wire:click="previousMonth" class="btn btn-outline-secondary"
+                            @if ($currentMonth == $this->availableMonths->last()) disabled @endif>
+                            &laquo; Bulan Sebelumnya
+                        </button>
+
+                        <button wire:click="nextMonth" class="btn btn-outline-secondary"
+                            @if ($currentMonth == $this->availableMonths->first()) disabled @endif>
+                            Bulan Berikutnya &raquo;
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     @endvolt
+
 </x-app-layout>

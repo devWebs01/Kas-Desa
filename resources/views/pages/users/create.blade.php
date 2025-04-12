@@ -12,12 +12,12 @@ name("users.create");
 state(["name", "email", "password", "identity", "avatar", "role"]);
 
 rules([
-    "name" => "required",
-    "email" => "required|email",
-    "password" => "required|min:6",
-    "identity" => "required",
-    "avatar" => "nullable|image",
-    "role" => "required|in:ADMIN,BENDAHARA",
+    "name" => ["required", "string"],
+    "email" => ["required", "email", "unique:users,email"], // tambahkan unique jika perlu
+    "password" => ["nullable", "string", "min:6"], // atau tambahkan 'confirmed' jika ada field password_confirmation
+    "identity" => ["required", "string", "size:16"], // pastikan tepat 16 karakter
+    "role" => ["required", "in:ADMIN,BENDAHARA"],
+    "avatar" => ["nullable", "image", "max:5048"], // batasan file 2MB, misalnya
 ]);
 
 $store = function () {

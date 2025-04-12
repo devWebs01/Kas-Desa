@@ -3,8 +3,8 @@ created:
     - app/Http/Controllers/TransactionController.php
     - database/factories/RecipientFactory.php
     - database/factories/TransactionFactory.php
-    - database/migrations/2025_04_12_050347_create_recipients_table.php
-    - database/migrations/2025_04_12_050348_create_transactions_table.php
+    - database/migrations/2025_04_12_231524_create_recipients_table.php
+    - database/migrations/2025_04_12_231525_create_transactions_table.php
     - app/Models/Recipient.php
     - app/Models/Transaction.php
     - database/seeders/RecipientSeeder.php
@@ -29,4 +29,4 @@ updated:
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, identity: string, role: "enum:'ADMIN','BENDAHARA'", avatar: 'string nullable', remember_token: 'string:100 nullable' }
     Recipient: { name: string, phone: string, signature: string, signature_code: longtext, relationships: { hasMany: Transaction } }
-    Transaction: { title: string, category: 'enum:credit,debit', amount: 'decimal:8,2', invoice: 'nullable unique string', date: date, description: longtext, recipient_id: 'foreign:recipients' }
+    Transaction: { title: string, category: 'enum:credit,debit', amount: string, invoice: 'nullable unique string', date: date, description: longtext, recipient_id: 'foreign:recipients' }

@@ -10,7 +10,7 @@ models:
   Transaction:
     title: string
     category: enum:credit,debit
-    amount: decimal:8,2
+    amount: string
     invoice: nullable unique string
     date: date
     description: longtext

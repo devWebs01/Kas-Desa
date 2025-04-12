@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Transaction;
-use Illuminate\Validation\Rule;
+use App\Models\Recipient;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use function Livewire\Volt\{state, rules, uses};
 use function Laravel\Folio\name;
@@ -9,13 +8,15 @@ use function Laravel\Folio\name;
 name("transactions.edit");
 
 state([
-    "title" => fn() => $this->transaction->invoice,
-    "category" => fn() => $this->transaction->invoice,
-    "amount" => fn() => $this->transaction->invoice,
+    "recipients" => fn() => Recipient::get(),
+
+    "title" => fn() => $this->transaction->title,
+    "category" => fn() => $this->transaction->category,
+    "amount" => fn() => $this->transaction->amount,
     "invoice" => fn() => $this->transaction->invoice,
-    "date" => fn() => $this->transaction->invoice,
-    "description" => fn() => $this->transaction->invoice,
-    "recipient_id" => fn() => $this->transaction->invoice,
+    "date" => fn() => Carbon\Carbon::parse($this->transaction->date)->format("Y-m-d"),
+    "description" => fn() => $this->transaction->description,
+    "recipient_id" => fn() => $this->transaction->recipient_id,
     "transaction",
 ]);
 
@@ -36,7 +37,7 @@ $edit = function () {
 
     $transaction->update($validateData);
 
-    LivewireAlert::title("Berhasil")->text("Data berhasil di proses.")->success()->show();
+    LivewireAlert::text("Data berhasil di proses.")->success()->toast()->show();
 
     $this->redirectRoute("transactions.index");
 };
@@ -51,6 +52,8 @@ $edit = function () {
     </x-slot>
 
     @volt
+        @include("layouts.tom-select")
+
         <div class="card">
             <div class="card-header">
                 <div class="alert alert-primary" role="alert">
@@ -58,33 +61,89 @@ $edit = function () {
                     <p>Pada halaman edit transaction, kamu dapat mengubah informasi data yang sudah ada.</p>
                 </div>
             </div>
+
             <div class="card-body">
                 <form wire:submit="edit">
                     @csrf
 
                     <div class="row">
-                        <div class="col-md">
+                        <div class="col-12">
                             <div class="mb-3">
-                                <label for="contoh1" class="form-label">Contoh1</label>
-                                <input type="text" class="form-control @error("contoh1") is-invalid @enderror"
-                                    wire:model="contoh1" id="contoh1" aria-describedby="contoh1Id"
-                                    placeholder="Enter transaction contoh1" autofocus autocomplete="contoh1" />
-                                @error("contoh1")
-                                    <small id="contoh1Id" class="form-text text-danger">{{ $message }}</small>
+                                <label for="title" class="form-label">Judul Transaksi</label>
+                                <input type="text" class="form-control @error("title") is-invalid @enderror"
+                                    wire:model="title" id="title" aria-describedby="titleId"
+                                    placeholder="Enter transaction title" autofocus autocomplete="title" />
+                                @error("title")
+                                    <small id="titleId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="contoh2" class="form-label">Contoh2</label>
-                                <input type="text" class="form-control @error("contoh2") is-invalid @enderror"
-                                    wire:model="contoh2" id="contoh2" aria-describedby="contoh2Id"
-                                    placeholder="Enter transaction contoh2" />
-                                @error("contoh2")
-                                    <small id="contoh2Id" class="form-text text-danger">{{ $message }}</small>
+                                <label for="amount" class="form-label">Jumlah (Angka)</label>
+                                <input type="number" class="form-control @error("amount") is-invalid @enderror"
+                                    wire:model="amount" id="amount" aria-describedby="amountId"
+                                    placeholder="Enter transaction amount" autocomplete="amount" />
+                                @error("amount")
+                                    <small id="amountId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Tanggal</label>
+                                <input type="date" class="form-control @error("date") is-invalid @enderror"
+                                    wire:model="date" id="date" aria-describedby="dateId"
+                                    placeholder="Enter transaction date" autocomplete="date" />
+                                @error("date")
+                                    <small id="dateId" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Kategori</label>
+                                <select class="form-select @error("category") is-invalid @enderror" wire:model="category"
+                                    name="category" id="category">
+                                    <option selected>Pilih Satu</option>
+                                    <option value="debit">Uang Masuk</option>
+                                    <option value="credit">Uang Keluar</option>
+                                </select>
+                                @error("category")
+                                    <small id="categoryId" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="recipient_id" class="form-label">Penerima</label>
+                                <div wire:ignore>
+                                    <select class="tom-select  @error("recipient_id") is-invalid @enderror"
+                                        wire:model="recipient_id" name="recipient_id" id="recipient_id">
+                                        <option selected disabled></option>
+                                        @foreach ($recipients as $recipient)
+                                            <option {{ $recipient->id !== $recipient_id ? :'selected' }} value="{{ $recipient->id }}">{{ $recipient->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                @error("recipient_id")
+                                    <small id="recipient_id" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Keterangan</label>
+                                <textarea class="form-control @error("description") is-invalid @enderror" name="description" id="description"
+                                    wire:model="description" rows="3"></textarea>
+                                @error("description")
+                                    <small id="descriptionId" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="row mb-3">

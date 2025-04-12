@@ -32,7 +32,6 @@ class Transaction extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'amount' => 'decimal:2',
         'date' => 'date',
         'recipient_id' => 'integer',
     ];

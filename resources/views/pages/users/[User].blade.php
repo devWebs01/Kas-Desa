@@ -3,7 +3,7 @@
 use App\Models\User;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\Log; // Pastikan Log di-import
-use function Livewire\Volt\{state, rules, usesFileUploads};
+use function Livewire\Volt\{state, usesFileUploads};
 use function Laravel\Folio\name;
 
 usesFileUploads();
@@ -20,52 +20,37 @@ state([
     "user",
 ]);
 
-rules([
-    "name" => "required",
-    "email" => "required|email",
-    "identity" => "required",
-    "role" => "required",
-    "password" => "nullable|min:6",
-    "avatar" => "nullable|image|max:2048",
-]);
-
 $update = function () {
-    try {
-        $validateData = $this->validate();
+    $user = User::findOrFail($this->user->id);
 
-        Log::info("Mulai memperbarui data pengguna", ["user" => $this->user]);
+    $validateData = $this->validate([
+        "name" => ["required", "string"],
+        "email" => ["required", "email", "unique:users,email," . $user->id],
+        "password" => ["nullable", "string", "min:6"],
+        "identity" => ["required", "string", "size:16"],
+        "role" => ["required", "in:ADMIN,BENDAHARA"],
+        "avatar" => ["nullable", "image", "max:2048"],
+    ]);
 
-        // Ambil data user dari model (asumsikan $this->user sudah merupakan model,
-        // namun jika belum, gunakan id atau metode yang sesuai)
-        $user = User::findOrFail($this->user->id);
-
-        if ($this->avatar) {
-            $validateData["avatar"] = $this->avatar->store("public/avatar");
-        } else {
-            $validateData["avatar"] = $this->user->avatar;
-        }
-
-        if ($this->password) {
-            $validateData["password"] = bcrypt($this->password);
-        } else {
-            $validateData["password"] = $this->user->password;
-        }
-
-        $user->update($validateData);
-
-        Log::info("Pengguna berhasil diperbarui", ["user_id" => $user->id]);
-
-        LivewireAlert::text("Data berhasil diperbarui.")->success()->toast()->show();
-
-        $this->redirectRoute("users.index");
-    } catch (\Exception $e) {
-        Log::error("Terjadi kesalahan saat memperbarui data pengguna", [
-            "error" => $e->getMessage(),
-            "trace" => $e->getTraceAsString(),
-        ]);
-
-        LivewireAlert::text("Terjadi kesalahan saat memperbarui data.")->error()->toast()->show();
+    if ($this->avatar) {
+        $validateData["avatar"] = $this->avatar->store("public/avatar");
+    } else {
+        $validateData["avatar"] = $this->user->avatar;
     }
+
+    if ($this->password) {
+        $validateData["password"] = bcrypt($this->password);
+    } else {
+        $validateData["password"] = $this->user->password;
+    }
+
+    $user->update($validateData);
+
+    Log::info("Pengguna berhasil diperbarui", ["user_id" => $user->id]);
+
+    LivewireAlert::text("Data berhasil diperbarui.")->success()->toast()->show();
+
+    $this->redirectRoute("users.index");
 };
 
 ?>

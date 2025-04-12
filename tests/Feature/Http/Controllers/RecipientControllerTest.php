@@ -28,6 +28,7 @@ final class RecipientControllerTest extends TestCase
         $response->assertViewHas('recipients');
     }
 
+
     #[Test]
     public function create_displays_view(): void
     {
@@ -36,6 +37,7 @@ final class RecipientControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('recipient.create');
     }
+
 
     #[Test]
     public function store_uses_form_request_validation(): void
@@ -75,6 +77,7 @@ final class RecipientControllerTest extends TestCase
         $response->assertSessionHas('recipient.id', $recipient->id);
     }
 
+
     #[Test]
     public function show_displays_view(): void
     {
@@ -87,6 +90,7 @@ final class RecipientControllerTest extends TestCase
         $response->assertViewHas('recipient');
     }
 
+
     #[Test]
     public function edit_displays_view(): void
     {
@@ -98,6 +102,7 @@ final class RecipientControllerTest extends TestCase
         $response->assertViewIs('recipient.edit');
         $response->assertViewHas('recipient');
     }
+
 
     #[Test]
     public function update_uses_form_request_validation(): void
@@ -135,6 +140,7 @@ final class RecipientControllerTest extends TestCase
         $this->assertEquals($signature, $recipient->signature);
         $this->assertEquals($signature_code, $recipient->signature_code);
     }
+
 
     #[Test]
     public function destroy_deletes_and_redirects(): void
