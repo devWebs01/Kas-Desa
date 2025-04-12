@@ -1,5 +1,5 @@
 <x-auth-layout>
-    <x-slot name="title">Halaman Masuk Auth</x-slot>
+    <x-slot name="title">Halaman Masuk</x-slot>
     <form method="POST" action="{{ route("login") }}">
         @csrf
 

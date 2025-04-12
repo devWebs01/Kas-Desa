@@ -65,8 +65,8 @@
          </li>
 
          <li class="menu-item">
-             <a class="menu-link {{ request()->is(["recipients/*", "recipients"]) ? "active" : "" }}"
-                 href="{{ route("recipients.index") }}">
+             <a class="menu-link {{ request()->is(["users/*", "users"]) ? "active" : "" }}"
+                 href="{{ route("users.index") }}">
                  <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
                  <div>Akun Pengguna</div>
              </a>
