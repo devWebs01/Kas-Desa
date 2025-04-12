@@ -1,60 +1,50 @@
- <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+@push("scripts")
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const canvas = document.getElementById("signature-pad");
-            const ctx = canvas.getContext("2d");
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('signature-pad');
             const signaturePad = new SignaturePad(canvas, {
                 minWidth: 1,
-                maxWidth: 3,
-                penColor: "black"
+                maxWidth: 2.5,
+                penColor: 'black'
             });
 
-            const signatureInput = document.getElementById("signature-data");
-            const signatureCodeInput = document.getElementById("signature-code");
+            const inputImage = document.getElementById('signature');
+            const inputJson = document.getElementById('signature-code');
+            const clearBtn = document.getElementById('clear-signature');
 
-            // Fungsi resize canvas untuk high-DPI device
+            // Resize canvas to match container
             function resizeCanvas() {
-                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                const ratio = window.devicePixelRatio || 1;
                 canvas.width = canvas.offsetWidth * ratio;
                 canvas.height = 300 * ratio;
-                canvas.getContext("2d").scale(ratio, ratio);
+
+                const ctx = canvas.getContext("2d");
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // ✅ Reset transform sebelum scaling
+                ctx.scale(ratio, ratio);
+
+                signaturePad.clear(); // ✅ Clear setelah scaling
             }
 
-            // Lakukan resize sebelum inisialisasi
+
+            window.addEventListener("resize", resizeCanvas);
             resizeCanvas();
 
-            // Muat data signature yang sudah tersimpan (jika ada)
-            let savedSignatureJson = {!! json_encode($item->signature_code) !!};
-            if (savedSignatureJson && savedSignatureJson !== "null") {
-                try {
-                    let data = JSON.parse(savedSignatureJson);
-                    signaturePad.fromData(data);
-                } catch (error) {
-                    console.error("Gagal memuat tanda tangan:", error);
-                }
-            }
-
-            // Event resize window
-            window.addEventListener("resize", () => {
-                const data = signaturePad.toData();
-                resizeCanvas();
+            // Clear button
+            clearBtn.addEventListener('click', function() {
                 signaturePad.clear();
-                signaturePad.fromData(data);
+                inputImage.value = '';
+                inputJson.value = '';
+                resizeCanvas(); // 🔁 Paksa canvas untuk refresh total
             });
 
-            // Tombol Reset
-            document.getElementById("clear-signature").addEventListener("click", function() {
-                signaturePad.clear();
-                signatureInput.value = "";
-                signatureCodeInput.value = "";
-            });
-
-            // Sebelum form disubmit, simpan data signature ke input hidden
-            document.querySelector("form").addEventListener("submit", function() {
+            // Save when submit
+            document.querySelector('form').addEventListener('submit', function() {
                 if (!signaturePad.isEmpty()) {
-                    signatureInput.value = signaturePad.toDataURL("image/png");
-                    signatureCodeInput.value = JSON.stringify(signaturePad.toData());
+                    inputImage.value = signaturePad.toDataURL();
+                    inputJson.value = JSON.stringify(signaturePad.toData());
                 }
             });
         });
     </script>
+@endpush

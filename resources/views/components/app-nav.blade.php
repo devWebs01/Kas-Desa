@@ -73,10 +73,18 @@
          </li>
 
          <li class="menu-item">
-             <a class="menu-link {{ request()->is(["transactions", "transactions/*"]) ? "active" : "" }}"
+             <a class="menu-link {{ request()->is(["recipients.index", "transactions/*"]) ? "active" : "" }}"
                  href="{{ route("transactions.index") }}">
                  <i class='menu-icon tf-icons bx bx-money'></i>
                  <div>Transaksi</div>
+             </a>
+         </li>
+
+         <li class="menu-item">
+             <a class="menu-link {{ request()->is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
+                 href="{{ route("recipients.index") }}">
+                 <i class='menu-icon tf-icons bx bx-money'></i>
+                 <div>Data Penerima</div>
              </a>
          </li>
 
