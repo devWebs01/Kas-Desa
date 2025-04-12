@@ -1,0 +1,28 @@
+models:
+  Recipient:
+    name: string
+    phone: string
+    signature: string
+    signature_code: longtext
+    relationships:
+      hasMany: Transaction
+  
+  Transaction:
+    title: string
+    category: enum:credit,debit
+    amount: decimal:8,2
+    invoice: nullable unique string
+    date: date
+    description: longtext
+    recipient_id: foreign:recipients
+
+controllers:
+  Recipient:
+    resource
+
+  Transaction:
+    resource
+
+seeders:
+  Recipient,
+  Transaction,

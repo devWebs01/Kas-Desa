@@ -1,0 +1,32 @@
+created:
+    - app/Http/Controllers/RecipientController.php
+    - app/Http/Controllers/TransactionController.php
+    - database/factories/RecipientFactory.php
+    - database/factories/TransactionFactory.php
+    - database/migrations/2025_04_12_050347_create_recipients_table.php
+    - database/migrations/2025_04_12_050348_create_transactions_table.php
+    - app/Models/Recipient.php
+    - app/Models/Transaction.php
+    - database/seeders/RecipientSeeder.php
+    - database/seeders/TransactionSeeder.php
+    - database/seeders/Seeder.php
+    - tests/Feature/Http/Controllers/RecipientControllerTest.php
+    - tests/Feature/Http/Controllers/TransactionControllerTest.php
+    - app/Http/Requests/RecipientStoreRequest.php
+    - app/Http/Requests/RecipientUpdateRequest.php
+    - app/Http/Requests/TransactionStoreRequest.php
+    - app/Http/Requests/TransactionUpdateRequest.php
+    - resources/views/recipient/index.blade.php
+    - resources/views/recipient/create.blade.php
+    - resources/views/recipient/show.blade.php
+    - resources/views/recipient/edit.blade.php
+    - resources/views/transaction/index.blade.php
+    - resources/views/transaction/create.blade.php
+    - resources/views/transaction/show.blade.php
+    - resources/views/transaction/edit.blade.php
+updated:
+    - routes/web.php
+models:
+    User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, identity: string, role: "enum:'ADMIN','BENDAHARA'", avatar: 'string nullable', remember_token: 'string:100 nullable' }
+    Recipient: { name: string, phone: string, signature: string, signature_code: longtext, relationships: { hasMany: Transaction } }
+    Transaction: { title: string, category: 'enum:credit,debit', amount: 'decimal:8,2', invoice: 'nullable unique string', date: date, description: longtext, recipient_id: 'foreign:recipients' }

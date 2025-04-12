@@ -65,18 +65,10 @@
          </li>
 
          <li class="menu-item">
-             <a class="menu-link {{ request()->is(["users/*", "users"]) ? "active" : "" }}"
-                 href="{{ route("users.index") }}">
+             <a class="menu-link {{ request()->is(["recipients/*", "recipients"]) ? "active" : "" }}"
+                 href="{{ route("recipients.index") }}">
                  <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
                  <div>Akun Pengguna</div>
-             </a>
-         </li>
-
-         <li class="menu-item">
-             <a class="menu-link {{ request()->is(["categories", "categories/*"]) ? "active" : "" }}"
-                 href="{{ route("categories.index") }}">
-                 <i class='menu-icon tf-icons bx bx-category-alt'></i>
-                 <div>Kategori</div>
              </a>
          </li>
 
