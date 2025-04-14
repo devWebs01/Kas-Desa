@@ -59,8 +59,8 @@ $create = function () {
         <div class="card">
             <div class="card-header">
                 <div class="alert alert-primary" role="alert">
-                    <strong>Tambah transaction</strong>
-                    <p>Pada halaman tambah transaction, kamu dapat memasukkan informasi dari data baru yang akan disimpan ke
+                    <strong>Tambah Transaksi</strong>
+                    <p>Pada halaman tambah transaksi, kamu dapat memasukkan informasi dari data baru yang akan disimpan ke
                         sistem.</p>
                 </div>
             </div>

@@ -44,11 +44,11 @@ $edit = function () {
 ?>
 
 <x-app-layout>
-    <x-slot name="title">Edit transaction</x-slot>
+    <x-slot name="title">Edit Transaksi</x-slot>
     <x-slot name="header">
         <li class="breadcrumb-item"><a href="{{ route("home") }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">transaction</a></li>
-        <li class="breadcrumb-item"><a href="#">Edit transaction</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">Transaksi</a></li>
+        <li class="breadcrumb-item"><a href="#">Edit Transaksi</a></li>
     </x-slot>
 
     @volt
@@ -57,8 +57,8 @@ $edit = function () {
         <div class="card">
             <div class="card-header">
                 <div class="alert alert-primary" role="alert">
-                    <strong>Edit transaction</strong>
-                    <p>Pada halaman edit transaction, kamu dapat mengubah informasi data yang sudah ada.</p>
+                    <strong>Edit Transaksi</strong>
+                    <p>Pada halaman edit transaksi, kamu dapat mengubah informasi data yang sudah ada.</p>
                 </div>
             </div>
 
@@ -122,7 +122,8 @@ $edit = function () {
                                         wire:model="recipient_id" name="recipient_id" id="recipient_id">
                                         <option selected disabled></option>
                                         @foreach ($recipients as $recipient)
-                                            <option {{ $recipient->id !== $recipient_id ? :'selected' }} value="{{ $recipient->id }}">{{ $recipient->name }}</option>
+                                            <option {{ $recipient->id !== $recipient_id ?: "selected" }}
+                                                value="{{ $recipient->id }}">{{ $recipient->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

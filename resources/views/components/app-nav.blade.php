@@ -67,7 +67,7 @@
          <li class="menu-item">
              <a class="menu-link {{ request()->is(["users/*", "users"]) ? "active" : "" }}"
                  href="{{ route("users.index") }}">
-                 <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
+                 <i class='menu-icon tf-icons bx bxs-user'></i>
                  <div>Akun Pengguna</div>
              </a>
          </li>
@@ -83,7 +83,7 @@
          <li class="menu-item">
              <a class="menu-link {{ request()->is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
                  href="{{ route("recipients.index") }}">
-                 <i class='menu-icon tf-icons bx bx-money'></i>
+                 <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
                  <div>Data Penerima</div>
              </a>
          </li>

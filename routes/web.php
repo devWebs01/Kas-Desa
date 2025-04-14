@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RecipientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +16,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('login');
-    } else {
-      return redirect('home');
-    }
-    
+  if (Auth::check()) {
+    return redirect('login');
+  } else {
+    return redirect('home');
+  }
+
 });
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::post('/recipients', [RecipientController::class, 'store'])->name('recipients.store');
+Route::put('/recipients/{recipient}/edit', [RecipientController::class, 'update'])->name('recipients.update');

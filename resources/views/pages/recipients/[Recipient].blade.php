@@ -10,26 +10,8 @@ name("recipients.edit");
 
 state([
     "recipient", // instance recipient yang akan diedit
-    "contoh1", // properti contoh1 dari recipient
-    "contoh2", // properti contoh2 dari recipient
 ]);
 
-rules([
-    "contoh1" => "required",
-    "contoh2" => "required",
-    // tambahkan validasi lain sesuai kebutuhan properti recipient Anda
-]);
-
-$edit = function () {
-    $recipient = $this->recipient;
-    $validateData = $this->validate();
-
-    $recipient->update($validateData);
-
-    LivewireAlert::title("Berhasil")->text("Data berhasil di proses.")->success()->show();
-
-    $this->redirectRoute("recipients.index");
-};
 ?>
 
 <x-app-layout>
@@ -44,44 +26,107 @@ $edit = function () {
         <div class="card">
             <div class="card-header">
                 <div class="alert alert-primary" role="alert">
-                    <strong>Edit recipient</strong>
-                    <p>Pada halaman edit recipient, kamu dapat mengubah informasi data yang sudah ada.</p>
+                    <strong>Edit Penerima</strong>
+                    <p>Pada halaman edit penerima, kamu dapat memasukkan informasi dari data baru yang akan disimpan ke
+                        sistem.</p>
                 </div>
             </div>
-            <div class="card-body">
-                <form wire:submit="edit">
-                    @csrf
 
+            @include("layouts.signature-pad")
+
+            <div class="card-body">
+                <form method="post" action="{{ route("recipients.update", $recipient->id) }}">
+                    @method("put")
+
+                    @csrf
                     <div class="row">
-                        <div class="col-md">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="contoh1" class="form-label">Contoh1</label>
-                                <input type="text" class="form-control @error("contoh1") is-invalid @enderror"
-                                    wire:model="contoh1" id="contoh1" aria-describedby="contoh1Id"
-                                    placeholder="Enter recipient contoh1" autofocus autocomplete="contoh1" />
-                                @error("contoh1")
-                                    <small id="contoh1Id" class="form-text text-danger">{{ $message }}</small>
+                                <label for="name" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control @error("name") is-invalid @enderror"
+                                    name="name" id="name" value="{{ old("name", $recipient->name) }}"
+                                    placeholder="Enter recipient name" autofocus autocomplete="name" />
+                                @error("name")
+                                    <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="contoh2" class="form-label">Contoh2</label>
-                                <input type="text" class="form-control @error("contoh2") is-invalid @enderror"
-                                    wire:model="contoh2" id="contoh2" aria-describedby="contoh2Id"
-                                    placeholder="Enter recipient contoh2" />
-                                @error("contoh2")
-                                    <small id="contoh2Id" class="form-text text-danger">{{ $message }}</small>
+                                <label for="phone" class="form-label">Nomor Telephone</label>
+                                <input type="number" class="form-control @error("phone") is-invalid @enderror"
+                                    name="phone" id="phone" aria-describedby="phoneId"
+                                    value="{{ old("phone", $recipient->phone) }}" placeholder="Enter recipient phone" />
+                                @error("phone")
+                                    <small id="phoneId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
+
+                        <!-- Signature Area -->
+                        <div class="mb-3">
+                            <label class="form-label">Tanda Tangan Baru (kosongkan jika tidak ingin diubah)</label>
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="pills-signature-old-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-signature-old" type="button" role="tab"
+                                        aria-controls="pills-signature-old" aria-selected="true">Tanda tangan lama</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-signature-new-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-signature-new" type="button" role="tab"
+                                        aria-controls="pills-signature-new" aria-selected="false">Buat tanda tangan
+                                        baru</button>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content p-0" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-signature-old" role="tabpanel"
+                                    aria-labelledby="pills-signature-old-tab">
+                                    <div class="border rounded">
+                                        @if ($recipient->signature)
+                                            <img src="{{ Storage::url($recipient->signature) }}" alt="Signature"
+                                                style="max-width: 100%; height: auto;">
+                                        @else
+                                            <div style="height: 300px;" class="bg-secondary position-relative">
+                                                <div
+                                                    class="position-absolute top-50 start-50 translate-middle h5 text-white">
+                                                    Tanda Tangan
+                                                    Tidak ditemukan
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-signature-new" role="tabpanel"
+                                    aria-labelledby="pills-signature-new-tab">
+                                    <div class="border rounded" style="border: 2px dotted #CCCCCC;">
+                                        <canvas id="signature-pad" style="width: 100%; height: 300px;"></canvas>
+                                    </div>
+
+                                    <div class="mt-2 text-end">
+                                        <button type="button" id="clear-signature"
+                                            class="btn btn-danger btn-sm">Hapus</button>
+                                    </div>
+
+                                    <input type="hidden" name="signature" id="signature">
+                                    <input type="hidden" name="signature_code" id="signature-code">
+                                </div>
+                            </div>
+
+                            @error("signature")
+                                <small id="signatureId" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                            @error("signature_code")
+                                <small id="signature_codeId" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md">
-                            <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                         <div class="col-md align-self-center text-end">
                             <span wire:loading class="spinner-border spinner-border-sm"></span>

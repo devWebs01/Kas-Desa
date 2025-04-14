@@ -37,6 +37,30 @@ $nextMonth = function () {
     }
 };
 
+$totalDebit = computed(function () {
+    return Transaction::whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$this->currentMonth])
+        ->where("category", "debit")
+        ->sum("amount");
+});
+
+$totalCredit = computed(function () {
+    return Transaction::whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$this->currentMonth])
+        ->where("category", "credit")
+        ->sum("amount");
+});
+
+$endingBalance = computed(function () {
+    $debitTotal = Transaction::whereRaw("DATE_FORMAT(date, '%Y-%m') <= ?", [$this->currentMonth])
+        ->where("category", "debit")
+        ->sum("amount");
+
+    $creditTotal = Transaction::whereRaw("DATE_FORMAT(date, '%Y-%m') <= ?", [$this->currentMonth])
+        ->where("category", "credit")
+        ->sum("amount");
+
+    return $debitTotal - $creditTotal;
+});
+
 $destroy = function (Transaction $transaction) {
     try {
         $transaction->delete();
@@ -58,6 +82,8 @@ $destroy = function (Transaction $transaction) {
         <li class="breadcrumb-item"><a href="{{ route("home") }}">Beranda</a></li>
         <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">Transaksi</a></li>
     </x-slot>
+
+    @include("pages.transactions.chart")
 
     @volt
         {{-- Terkait dengan logic Volt --}}
@@ -112,6 +138,31 @@ $destroy = function (Transaction $transaction) {
                                 </tr>
                             @endforelse
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total Debit</th>
+                                <td></td>
+                                <td class="text-success">{{ formatRupiah($this->totalDebit) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Total Kredit</th>
+                                <td></td>
+                                <td></td>
+                                <td class="text-danger">{{ formatRupiah($this->totalCredit) }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Saldo Akhir (Kumulatif)</th>
+                                <td></td>
+                                <td colspan="2" class="fw-bold">{{ formatRupiah($this->endingBalance) }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                     <div class=" mt-2 d-flex justify-content-between align-items-center mt-3">
