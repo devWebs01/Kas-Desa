@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('invoice')->nullable()->unique();
             $table->date('date');
             $table->longText('description');
-            $table->foreignId('recipient_id')->constrained();
+            $table->foreignId('recipient_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

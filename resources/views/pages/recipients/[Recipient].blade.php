@@ -65,7 +65,7 @@ state([
 
                         <!-- Signature Area -->
                         <div class="mb-3">
-                            <label class="form-label">Tanda Tangan Baru (kosongkan jika tidak ingin diubah)</label>
+                            <label class="form-label">Tanda Tangan</label>
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="pills-signature-old-tab" data-bs-toggle="pill"

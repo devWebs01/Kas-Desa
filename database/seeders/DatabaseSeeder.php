@@ -29,11 +29,7 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
         ]);
 
-        // Ambil semua penerima, buat 3 dummy kalau belum ada
-        if (Recipient::count() < 3) {
-            Recipient::factory()->count(3)->create();
-        }
-
+        
         $recipients = Recipient::all();
 
         // Dua bulan terakhir (misalnya April dan Maret 2025 jika sekarang Mei 2025)
