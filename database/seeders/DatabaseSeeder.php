@@ -6,7 +6,6 @@ namespace Database\Seeders;
 use App\Models\Recipient;
 use App\Models\Transaction;
 use Illuminate\Database\Seeder;
-use Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'identity' => Str::random(10),
+            'identity' => fake()->numerify('##########0000'), // misal: 32030112340000
             'role' => 'ADMIN',
         ]);
 

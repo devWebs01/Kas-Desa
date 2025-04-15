@@ -19,7 +19,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect('login');
     } else {
-        return redirect('home');
+        return redirect('pages.home');
     }
 
 });

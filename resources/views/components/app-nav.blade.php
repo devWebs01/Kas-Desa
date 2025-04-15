@@ -43,6 +43,14 @@ state([
                 </a>
             </li>
 
+            <li class="menu-item">
+                <a class="menu-link {{ request()->is(["settings/*", "settings"]) ? "active" : "" }}"
+                    href="{{ route("settings.index") }}">
+                    <i class='menu-icon tf-icons bx bxs-cog'></i>
+                    <div>Pengaturan</div>
+                </a>
+            </li>
+
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Transaksi</span>
             </li>

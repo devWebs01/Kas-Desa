@@ -35,7 +35,6 @@ $monthlySummaries = computed(function () {
 @volt
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Grafik Debit, Kredit & Saldo</h5>
             <canvas id="transactionChart" height="100"></canvas>
         </div>
     </div>

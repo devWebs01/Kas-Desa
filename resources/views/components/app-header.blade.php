@@ -41,8 +41,8 @@ $logout = function () {
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
-                                            <span class="fw-semibold d-block">John Doe</span>
-                                            <small class="text-muted">Admin</small>
+                                            <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
+                                            <small class="text-muted">{{ Auth::user()->role }}</small>
                                         </div>
                                     </div>
                                 </a>
@@ -51,7 +51,7 @@ $logout = function () {
                                 <div class="dropdown-divider"></div>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route("profile.users") }}">
                                     <i class="bx bx-user me-2"></i>
                                     <span class="align-middle">Profil Saya</span>
                                 </a>
