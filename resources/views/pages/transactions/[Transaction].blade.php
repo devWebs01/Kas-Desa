@@ -2,7 +2,7 @@
 
 use App\Models\Recipient;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
-use function Livewire\Volt\{state, rules, uses};
+use function Livewire\Volt\{state, rules, computed, mount};
 use function Laravel\Folio\name;
 
 name("transactions.edit");
@@ -16,9 +16,23 @@ state([
     "invoice" => fn() => $this->transaction->invoice,
     "date" => fn() => Carbon\Carbon::parse($this->transaction->date)->format("Y-m-d"),
     "description" => fn() => $this->transaction->description,
-    "recipient_id" => fn() => $this->transaction->recipient_id,
+    "recipient_id",
     "transaction",
+    // show detail recipient
+    "recipient",
 ]);
+
+mount(function () {
+    $this->recipient_id = $this->transaction->recipient_id;
+});
+
+$showRecipient = computed(function () {
+    if (is_numeric($this->recipient_id)) {
+        return Recipient::find($this->recipient_id);
+    } else {
+        return null;
+    }
+});
 
 rules([
     "title" => ["required", "string"],
@@ -119,8 +133,8 @@ $edit = function () {
                                 <label for="recipient_id" class="form-label">Penerima</label>
                                 <div wire:ignore>
                                     <select class="tom-select  @error("recipient_id") is-invalid @enderror"
-                                        wire:model="recipient_id" name="recipient_id" id="recipient_id">
-                                        <option selected disabled></option>
+                                        wire:model.live="recipient_id" name="recipient_id" id="tom-select">
+                                        <option value=" ">Pilih Penerima</option>
                                         @foreach ($recipients as $recipient)
                                             <option {{ $recipient->id !== $recipient_id ?: "selected" }}
                                                 value="{{ $recipient->id }}">{{ $recipient->name }}</option>
@@ -133,6 +147,36 @@ $edit = function () {
                                 @enderror
                             </div>
                         </div>
+
+                        @if (!empty($this->showRecipient))
+                            <div class="col-12 animate__animated animate__zoomIn">
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">No. Telephone</label>
+                                    <input type="text" class="form-control" name="phone" id="phone"
+                                        aria-describedby="helpId" value="{{ $this->showRecipient->phone }}"
+                                        placeholder="phone" disabled />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="signature" class="form-label">Tanda Tangan Penerima</label>
+
+                                    <div class="border rounded">
+                                        @if ($this->showRecipient->signature)
+                                            <img src="{{ Storage::url($this->showRecipient->signature) }}" alt="Signature"
+                                                style="max-width: 100%; height: auto;">
+                                        @else
+                                            <div style="height: 300px;" class="bg-secondary position-relative">
+                                                <div
+                                                    class="position-absolute top-50 start-50 translate-middle h5 text-white">
+                                                    Tanda Tangan
+                                                    Tidak ditemukan
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                         <div class="col-12">
                             <div class="mb-3">
