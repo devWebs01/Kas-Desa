@@ -73,7 +73,15 @@
          </li>
 
          <li class="menu-item">
-             <a class="menu-link {{ request()->is(["recipients.index", "transactions/*"]) ? "active" : "" }}"
+             <a class="menu-link {{ request()->is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
+                 href="{{ route("recipients.index") }}">
+                 <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
+                 <div>Data Penerima</div>
+             </a>
+         </li>
+
+         <li class="menu-item">
+             <a class="menu-link {{ request()->is(["transactions.index", "transactions/*"]) ? "active" : "" }}"
                  href="{{ route("transactions.index") }}">
                  <i class='menu-icon tf-icons bx bx-money'></i>
                  <div>Transaksi</div>
@@ -81,10 +89,10 @@
          </li>
 
          <li class="menu-item">
-             <a class="menu-link {{ request()->is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
-                 href="{{ route("recipients.index") }}">
-                 <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
-                 <div>Data Penerima</div>
+             <a class="menu-link {{ request()->is(["reports.transaction"]) ? "active" : "" }}"
+                 href="{{ route("reports.transaction") }}">
+                 <i class='menu-icon tf-icons bx bx-file'></i>
+                 <div>Laporan Transaksi</div>
              </a>
          </li>
 

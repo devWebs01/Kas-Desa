@@ -40,4 +40,22 @@ class Transaction extends Model
     {
         return $this->belongsTo(Recipient::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($transaction) {
+            $transaction->invoice = self::generateInvoiceNumber();
+        });
+    }
+
+    protected static function generateInvoiceNumber()
+    {
+        $prefix = 'INV';
+        $date = now()->format('Ymd'); // Format: 20250415
+        $lastId = self::max('id') + 1;
+        return sprintf('%s-%s-%05d', $prefix, $date, $lastId);
+        // Contoh hasil: INV-20250415-00001
+    }
 }
