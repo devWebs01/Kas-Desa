@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Recipient;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransactionFactory extends Factory
 {
@@ -23,8 +22,8 @@ class TransactionFactory extends Factory
     {
         return [
             'title' => fake()->sentence(4),
-            'category' => fake()->randomElement(["credit","debit"]),
-            'amount' => fake()->numerify() . '000',
+            'category' => fake()->randomElement(['credit', 'debit']),
+            'amount' => fake()->numerify().'000',
             'invoice' => fake()->word(),
             'date' => fake()->date(),
             'description' => fake()->text(),

@@ -45,40 +45,18 @@ $filteredTransactions = computed(function () {
             });
         })
         ->orderBy("date", "asc")
-        ->paginate(10); // ✅ PAGINATION
+        ->paginate(20); // ✅ PAGINATION
 });
-
-$availableMonths = computed(function () {
-    return Transaction::select(DB::raw("DATE_FORMAT(date, '%Y-%m') as month"))->groupBy("month")->orderBy("month", "desc")->pluck("month");
-});
-
-$transactionsByMonth = computed(function () {
-    return Transaction::query()
-        ->with("recipient")
-        ->whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$this->currentMonth])
-        ->orderBy("date", "asc") // ✅ BENAR
-        ->get();
-});
-
-$previousMonth = function () {
-    $currentIndex = $this->availableMonths->search($this->currentMonth);
-    if ($currentIndex !== false && $currentIndex < $this->availableMonths->count() - 1) {
-        $this->currentMonth = $this->availableMonths[$currentIndex + 1];
-    }
-};
-
-$nextMonth = function () {
-    $currentIndex = $this->availableMonths->search($this->currentMonth);
-    if ($currentIndex > 0) {
-        $this->currentMonth = $this->availableMonths[$currentIndex - 1];
-    }
-};
 
 $totalDebit = computed(fn() => $this->filteredAllTransactions->where("category", "debit")->sum("amount"));
 
 $totalCredit = computed(fn() => $this->filteredAllTransactions->where("category", "credit")->sum("amount"));
 
 $endingBalance = computed(fn() => $this->totalDebit - $this->totalCredit);
+
+$resetSearch = function () {
+    $this->reset(["startDate", "endDate", "filterCategory", "filterKeyword"]);
+};
 
 ?>
 
@@ -115,7 +93,28 @@ $endingBalance = computed(fn() => $this->totalDebit - $this->totalCredit);
                         <input type="text" wire:model.live="filterKeyword" class="form-control"
                             placeholder="Masukkan kata kunci...">
                     </div>
+
+                    <div class="col-md-6">
+                        <button wire:click="resetSearch" type="button" class="btn btn-danger">
+                            Reset
+                        </button>
+
+                    </div>
+
+                    <div class="col-md-6 text-end">
+                        <a href="{{ route("transactions.print", [
+                            "startDate" => $startDate,
+                            "endDate" => $endDate,
+                            "filterCategory" => $this->filterCategory,
+                            "filterKeyword" => $this->filterKeyword, // Bisa ganti jadi filterKeyword
+                        ]) }}"
+                            target="_blank" class="btn btn-success">
+                            <i class="bi bi-printer"></i> Cetak Data
+                        </a>
+                    </div>
+
                 </div>
+
             </div>
 
             <div class="card-body">
@@ -135,7 +134,7 @@ $endingBalance = computed(fn() => $this->totalDebit - $this->totalCredit);
                             @forelse ($this->filteredTransactions as $item)
                                 <tr>
                                     <td>{{ $item->invoice }}</td>
-                                    <td>{{ $item->title }}</td>
+                                    <td>{{ Str::limit($item->title, 30, '...') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($item->date)->format("d M Y") }}</td>
                                     <td class="text-success">
                                         {{ $item->category === "debit" ? formatRupiah($item->amount) : "" }}
@@ -154,26 +153,23 @@ $endingBalance = computed(fn() => $this->totalDebit - $this->totalCredit);
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Total Debit</th>
-                                <td></td>
+                                <th colspan="2">Total Debit</th>
+
                                 <td class="text-success">{{ formatRupiah($this->totalDebit) }}</td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                             </tr>
                             <tr>
-                                <th>Total Kredit</th>
-                                <td></td>
+                                <th colspan="2">Total Kredit</th>
+
                                 <td></td>
                                 <td class="text-danger">{{ formatRupiah($this->totalCredit) }}</td>
                                 <td></td>
-                                <td></td>
                             </tr>
                             <tr>
-                                <th>Saldo Akhir (Kumulatif)</th>
-                                <td></td>
+                                <th colspan="2">Saldo Akhir (Kumulatif)</th>
+
                                 <td colspan="2" class="fw-bold">{{ formatRupiah($this->endingBalance) }}</td>
-                                <td></td>
                                 <td></td>
                             </tr>
                         </tfoot>

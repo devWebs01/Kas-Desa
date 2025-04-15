@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class RecipientController extends Controller
 {
-
     public function store(Request $request)
     {
         $request->validate([
@@ -19,7 +18,7 @@ class RecipientController extends Controller
         ]);
 
         $signatureData = $request->input('signature');
-        $signatureName = 'signature_' . time() . '.png';
+        $signatureName = 'signature_'.time().'.png';
 
         if (preg_match('/^data:image\/(\w+);base64,/', $signatureData)) {
             $signatureData = substr($signatureData, strpos($signatureData, ',') + 1);
@@ -54,15 +53,15 @@ class RecipientController extends Controller
 
         if ($request->filled('signature') && $request->filled('signature_code')) {
             $signatureData = $request->input('signature');
-            $signatureName = 'signature_' . time() . '.png';
+            $signatureName = 'signature_'.time().'.png';
 
             if (preg_match('/^data:image\/(\w+);base64,/', $signatureData)) {
                 $signatureData = substr($signatureData, strpos($signatureData, ',') + 1);
                 $signatureData = base64_decode($signatureData);
 
                 // Hapus tanda tangan lama kalau ada
-                if ($recipient->signature && Storage::exists('public/' . $recipient->signature)) {
-                    Storage::delete('public/' . $recipient->signature);
+                if ($recipient->signature && Storage::exists('public/'.$recipient->signature)) {
+                    Storage::delete('public/'.$recipient->signature);
                 }
 
                 Storage::put("public/signatures/{$signatureName}", $signatureData);
@@ -76,6 +75,4 @@ class RecipientController extends Controller
 
         return redirect()->route('recipients.index')->with('success', 'Penerima berhasil diperbarui.');
     }
-
-
 }

@@ -15,14 +15,12 @@ models:
     date: date
     description: longtext
     recipient_id: foreign:recipients
-
-controllers:
-  Recipient:
-    resource
-
-  Transaction:
-    resource
+  
+  Setting:
+    name: string
+    address: longtext
 
 seeders:
   Recipient,
   Transaction,
+  Setting,

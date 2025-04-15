@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Transaction extends Model
 {
@@ -53,9 +54,9 @@ class Transaction extends Model
     protected static function generateInvoiceNumber()
     {
         $prefix = 'INV';
-        $date = now()->format('Ymd'); // Format: 20250415
-        $lastId = self::max('id') + 1;
-        return sprintf('%s-%s-%05d', $prefix, $date, $lastId);
-        // Contoh hasil: INV-20250415-00001
+        $date = now()->format('ymd'); // Format: 240415
+        $random = strtoupper(Str::random(5)); // 5 karakter acak, huruf & angka
+
+        return "{$prefix}-{$date}-{$random}";
     }
 }

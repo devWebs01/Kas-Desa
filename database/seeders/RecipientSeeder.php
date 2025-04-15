@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
 use Storage;
 use Str;
 
@@ -25,24 +25,23 @@ class RecipientSeeder extends Seeder
 
         $fakeSignatureCode = json_encode([
             [
-                "penColor" => "black",
-                "dotSize" => 0,
-                "minWidth" => 1,
-                "maxWidth" => 2.5,
-                "velocityFilterWeight" => 0.7,
-                "compositeOperation" => "source-over",
-                "points" => [
-                    ["time" => 1680000000, "x" => 100, "y" => 50, "pressure" => 0.5],
-                    ["time" => 1680000001, "x" => 105, "y" => 52, "pressure" => 0.5],
-                    ["time" => 1680000002, "x" => 110, "y" => 55, "pressure" => 0.5],
+                'penColor' => 'black',
+                'dotSize' => 0,
+                'minWidth' => 1,
+                'maxWidth' => 2.5,
+                'velocityFilterWeight' => 0.7,
+                'compositeOperation' => 'source-over',
+                'points' => [
+                    ['time' => 1680000000, 'x' => 100, 'y' => 50, 'pressure' => 0.5],
+                    ['time' => 1680000001, 'x' => 105, 'y' => 52, 'pressure' => 0.5],
+                    ['time' => 1680000002, 'x' => 110, 'y' => 55, 'pressure' => 0.5],
                 ],
-            ]
+            ],
         ], JSON_UNESCAPED_SLASHES);
-
 
         for ($i = 0; $i < $numberOfRecipients; $i++) {
             // Simpan signature ke storage/public/signatures/
-            $signatureName = Str::uuid()->toString() . '.png';
+            $signatureName = Str::uuid()->toString().'.png';
 
             // Ambil bagian base64-nya saja
             $base64String = explode(',', $signatureBase64)[1];
@@ -56,7 +55,6 @@ class RecipientSeeder extends Seeder
                 'phone' => fake()->phoneNumber,
                 'signature' => "signatures/{$signatureName}",
                 'signature_code' => $fakeSignatureCode,
-
 
             ]);
         }

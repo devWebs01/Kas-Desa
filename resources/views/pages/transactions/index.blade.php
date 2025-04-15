@@ -140,24 +140,21 @@ $destroy = function (Transaction $transaction) {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Total Debit</th>
-                                <td></td>
+                                <th colspan="2">Total Debit</th>
                                 <td class="text-success">{{ formatRupiah($this->totalDebit) }}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th>Total Kredit</th>
-                                <td></td>
+                                <th colspan="2">Total Kredit</th>
                                 <td></td>
                                 <td class="text-danger">{{ formatRupiah($this->totalCredit) }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th>Saldo Akhir (Kumulatif)</th>
-                                <td></td>
+                                <th colspan="2">Saldo Akhir (Kumulatif)</th>
                                 <td colspan="2" class="fw-bold">{{ formatRupiah($this->endingBalance) }}</td>
                                 <td></td>
                                 <td></td>

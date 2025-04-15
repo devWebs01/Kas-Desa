@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RecipientSeeder::class,
             TransactionSeeder::class,
+            SettingSeeder::class,
         ]);
 
-        
         $recipients = Recipient::all();
 
         // Dua bulan terakhir (misalnya April dan Maret 2025 jika sekarang Mei 2025)
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                             'category' => $category,
                             'amount' => fake()->numberBetween(50000, 500000),
                             'recipient_id' => $recipients->random()->id,
-                            'description' => ucfirst($category) . ' pada ' . $date->format('d M Y'),
+                            'description' => ucfirst($category).' pada '.$date->format('d M Y'),
                         ]);
                     }
                 }

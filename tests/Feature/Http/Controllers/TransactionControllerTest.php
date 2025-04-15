@@ -30,7 +30,6 @@ final class TransactionControllerTest extends TestCase
         $response->assertViewHas('transactions');
     }
 
-
     #[Test]
     public function create_displays_view(): void
     {
@@ -39,7 +38,6 @@ final class TransactionControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('transaction.create');
     }
-
 
     #[Test]
     public function store_uses_form_request_validation(): void
@@ -85,7 +83,6 @@ final class TransactionControllerTest extends TestCase
         $response->assertSessionHas('transaction.id', $transaction->id);
     }
 
-
     #[Test]
     public function show_displays_view(): void
     {
@@ -98,7 +95,6 @@ final class TransactionControllerTest extends TestCase
         $response->assertViewHas('transaction');
     }
 
-
     #[Test]
     public function edit_displays_view(): void
     {
@@ -110,7 +106,6 @@ final class TransactionControllerTest extends TestCase
         $response->assertViewIs('transaction.edit');
         $response->assertViewHas('transaction');
     }
-
 
     #[Test]
     public function update_uses_form_request_validation(): void
@@ -154,7 +149,6 @@ final class TransactionControllerTest extends TestCase
         $this->assertEquals($description, $transaction->description);
         $this->assertEquals($recipient->id, $transaction->recipient_id);
     }
-
 
     #[Test]
     public function destroy_deletes_and_redirects(): void
