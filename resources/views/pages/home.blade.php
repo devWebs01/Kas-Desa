@@ -69,9 +69,9 @@ $balancePerDay = computed(function () {
 ?>
 
 <x-app-layout>
-    <x-slot name="title">Dashboard</x-slot>
+    <x-slot name="title">Beranda</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Beranda</li>
     </x-slot>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

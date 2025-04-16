@@ -2,6 +2,8 @@
 
 $logout = function () {
     Auth()->logout();
+
+    $this->redirect("/");
 };
 ?>
 
