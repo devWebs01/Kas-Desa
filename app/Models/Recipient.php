@@ -18,8 +18,8 @@ class Recipient extends Model
     protected $fillable = [
         'name',
         'phone',
-        'signature',
-        'signature_code',
+        // 'signature',
+        // 'signature_code',
     ];
 
     /**

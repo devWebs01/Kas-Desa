@@ -4,6 +4,7 @@ use App\Models\Recipient;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use function Livewire\Volt\{state, rules, computed, mount};
 use function Laravel\Folio\name;
+use Illuminate\Validation\Rule;
 
 name("transactions.edit");
 
@@ -13,17 +14,17 @@ state([
     "title" => fn() => $this->transaction->title,
     "category" => fn() => $this->transaction->category,
     "amount" => fn() => $this->transaction->amount,
-    "invoice" => fn() => $this->transaction->invoice,
     "date" => fn() => Carbon\Carbon::parse($this->transaction->date)->format("Y-m-d"),
     "description" => fn() => $this->transaction->description,
-    "recipient_id",
+
+    "phone",
     "transaction",
-    // show detail recipient
-    "recipient",
+    "recipient_id",
 ]);
 
 mount(function () {
     $this->recipient_id = $this->transaction->recipient_id;
+    $this->phone = $this->transaction->recipient->phone;
 });
 
 $showRecipient = computed(function () {
@@ -38,18 +39,30 @@ rules([
     "title" => ["required", "string"],
     "category" => ["required", "in:credit,debit"],
     "amount" => ["required", "numeric", "between:-999999.99,999999.99"],
-    "invoice" => ["nullable", "string", "unique:transactions,invoice"],
     "date" => ["required", "date"],
     "description" => ["required", "string"],
-    "recipient_id" => ["required", "integer", "exists:recipients,id"],
+    "recipient_id" => ["required"],
+    "phone" => ["required", "string", "regex:/^(\+62|62|0)8[1-9][0-9]{6,9}$/"],
 ]);
 
 $edit = function () {
     $transaction = $this->transaction;
 
-    $validateData = $this->validate();
+    $validated = $this->validate();
 
-    $transaction->update($validateData);
+    // Cek apakah recipient_id adalah angka atau nama baru
+    if (!is_numeric($validated["recipient_id"])) {
+        // Buat recipient baru
+        $newRecipient = Recipient::create([
+            "name" => $validated["recipient_id"],
+            "phone" => $validated["phone"],
+        ]);
+
+        // Set recipient_id dengan ID yang baru dibuat
+        $validated["recipient_id"] = $newRecipient->id;
+    }
+
+    $transaction->update($validated);
 
     LivewireAlert::text("Data berhasil di proses.")->success()->toast()->show();
 
@@ -75,6 +88,10 @@ $edit = function () {
                     <p>Pada halaman edit transaksi, kamu dapat mengubah informasi data yang sudah ada.</p>
                 </div>
             </div>
+
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
 
             <div class="card-body">
                 <form wire:submit="edit">
@@ -148,35 +165,17 @@ $edit = function () {
                             </div>
                         </div>
 
-                        @if (!empty($this->showRecipient))
-                            <div class="col-12 animate__animated animate__zoomIn">
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">No. Telephone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone"
-                                        aria-describedby="helpId" value="{{ $this->showRecipient->phone }}"
-                                        placeholder="phone" disabled />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="signature" class="form-label">Tanda Tangan Penerima</label>
-
-                                    <div class="border rounded">
-                                        @if ($this->showRecipient->signature)
-                                            <img src="{{ Storage::url($this->showRecipient->signature) }}" alt="Signature"
-                                                style="max-width: 100%; height: auto;">
-                                        @else
-                                            <div style="height: 300px;" class="bg-secondary position-relative">
-                                                <div
-                                                    class="position-absolute top-50 start-50 translate-middle h5 text-white">
-                                                    Tanda Tangan
-                                                    Tidak ditemukan
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">No. Telephone</label>
+                                <input type="text" class="form-control" wire:model="phone" name="phone" id="phone"
+                                    aria-describedby="phoneId" value="{{ $this->showRecipient->phone ?? "" }}"
+                                    placeholder="phone" />
+                                @error("phone")
+                                    <small id="phone" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                        @endif
+                        </div>
 
                         <div class="col-12">
                             <div class="mb-3">

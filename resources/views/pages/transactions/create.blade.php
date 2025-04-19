@@ -18,8 +18,7 @@ state([
     "description",
     "recipient_id",
 
-    // show detail recipient
-    "recipient",
+    "phone", // <--- Tambahan
 ]);
 
 $showRecipient = computed(function () {
@@ -37,13 +36,26 @@ rules([
     "invoice" => ["nullable", "string", "unique:transactions,invoice"],
     "date" => ["required", "date"],
     "description" => ["required", "string"],
-    "recipient_id" => ["required", "integer", "exists:recipients,id"],
+    "recipient_id" => ["required"],
+    "phone" => ["required", "string", "regex:/^(\+62|62|0)8[1-9][0-9]{6,9}$/"],
 ]);
 
 $create = function () {
-    $validateData = $this->validate();
+    $validated = $this->validate();
 
-    Transaction::create($validateData);
+    // Cek apakah recipient_id adalah angka atau nama baru
+    if (!is_numeric($validated["recipient_id"])) {
+        // Buat recipient baru
+        $newRecipient = Recipient::create([
+            "name" => $validated["recipient_id"],
+            "phone" => $validated["phone"],
+        ]);
+
+        // Set recipient_id dengan ID yang baru dibuat
+        $validated["recipient_id"] = $newRecipient->id;
+    }
+
+    Transaction::create($validated);
 
     LivewireAlert::text("Data berhasil di proses.")->success()->toast()->show();
 
@@ -129,7 +141,7 @@ $create = function () {
                                 <div wire:ignore>
                                     <select class="tom-select  @error("recipient_id") is-invalid @enderror"
                                         wire:model.live="recipient_id" name="recipient_id" id="tom-select">
-                                        <option selected value=" ">Pilih Penerima</option>
+                                        <option selected value=" ">Pilih Penerima atau ketik nama baru</option>
                                         @foreach ($recipients as $recipient)
                                             <option value="{{ $recipient->id }}">{{ $recipient->name }}</option>
                                         @endforeach
@@ -142,35 +154,17 @@ $create = function () {
                             </div>
                         </div>
 
-                        @if (!empty($this->showRecipient))
-                            <div class="col-12 animate__animated animate__zoomIn">
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">No. Telephone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone"
-                                        aria-describedby="helpId" value="{{ $this->showRecipient->phone }}"
-                                        placeholder="phone" disabled />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="signature" class="form-label">Tanda Tangan Penerima</label>
-
-                                    <div class="border rounded">
-                                        @if ($this->showRecipient->signature)
-                                            <img src="{{ Storage::url($this->showRecipient->signature) }}" alt="Signature"
-                                                style="max-width: 100%; height: auto;">
-                                        @else
-                                            <div style="height: 300px;" class="bg-secondary position-relative">
-                                                <div
-                                                    class="position-absolute top-50 start-50 translate-middle h5 text-white">
-                                                    Tanda Tangan
-                                                    Tidak ditemukan
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">No. Telephone</label>
+                                <input type="text" class="form-control" wire:model="phone" name="phone" id="phone"
+                                    aria-describedby="phoneId" value="{{ $this->showRecipient->phone ?? "" }}"
+                                    placeholder="phone" />
+                                @error("phone")
+                                    <small id="phone" class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                        @endif
+                        </div>
 
                         <div class="col-12">
                             <div class="mb-3">

@@ -53,8 +53,8 @@ class RecipientSeeder extends Seeder
             DB::table('recipients')->insert([
                 'name' => fake()->name,
                 'phone' => fake()->phoneNumber,
-                'signature' => "signatures/{$signatureName}",
-                'signature_code' => $fakeSignatureCode,
+                // 'signature' => "signatures/{$signatureName}",
+                // 'signature_code' => $fakeSignatureCode,
 
             ]);
         }

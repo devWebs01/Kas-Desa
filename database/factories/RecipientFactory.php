@@ -22,8 +22,8 @@ class RecipientFactory extends Factory
         return [
             'name' => fake()->name(),
             'phone' => fake()->phoneNumber(),
-            'signature' => fake()->word(),
-            'signature_code' => fake()->text(),
+            // 'signature' => fake()->word(),
+            // 'signature_code' => fake()->text(),
         ];
     }
 }

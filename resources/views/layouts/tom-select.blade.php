@@ -64,7 +64,7 @@
                new TomSelect("#tom-select", {
                    persist: false,
                    createOnBlur: true,
-                   //    create: true,
+                   create: true,
                    placeholder: "Pilih penerima...",
                    dropdownClass: 'dropdown-menu show',
                });
