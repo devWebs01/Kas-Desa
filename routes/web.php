@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\SettingsController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +31,8 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/recipients', [RecipientController::class, 'store'])->name('recipients.store');
-Route::put('/recipients/{recipient}/edit', [RecipientController::class, 'update'])->name('recipients.update');
-
 Route::get('/transactions/print', [HomeController::class, 'print'])->name('transactions.print');
+
+Route::get('settings/show', [SettingsController::class, 'show'])->name('settings.show');
+Route::post('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+Route::post('signature/destroy', action: [SettingsController::class, 'destroy'])->name('signature.destroy');

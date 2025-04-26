@@ -15,6 +15,8 @@ class SettingSeeder extends Seeder
         Setting::create([
             'name' => 'Kas Adat Kelurahan Dusun Kebun',
             'address' => 'Dusun Kebun, Batang Asam, Tanjung Jabung Barat',
+            'signature' => '',
+            'signature_code' => '',
         ]);
     }
 }

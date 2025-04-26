@@ -12,5 +12,7 @@ class Setting extends Model
     protected $fillable = [
         'name',
         'address',
+        'signature',
+        'signature_code',
     ];
 }

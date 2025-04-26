@@ -24,6 +24,10 @@ class User extends Authenticatable
         'identity',
         'avatar',
         'role',
+
+        //
+        'signature',
+        'signature_code',
     ];
 
     /**

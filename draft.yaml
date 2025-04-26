@@ -2,8 +2,6 @@ models:
   Recipient:
     name: string
     phone: string
-    signature: string
-    signature_code: longtext
     relationships:
       hasMany: Transaction
   

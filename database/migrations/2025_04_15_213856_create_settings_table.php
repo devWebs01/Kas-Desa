@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->longText('address');
+            $table->longText('signature')->nullable();
+            $table->longText('signature_code')->nullable();
             $table->timestamps();
         });
     }

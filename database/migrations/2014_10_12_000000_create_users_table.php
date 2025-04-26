@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('identity');
             $table->enum('role', ['ADMIN', 'BENDAHARA']);
             $table->string('avatar')->nullable();
+            $table->longText('signature')->nullable();
+            $table->longText('signature_code')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
