@@ -73,7 +73,7 @@ $create = function () {
     </x-slot>
 
     @volt
-        @include("layouts.tom-select")
+        @include("components.partials.tom-select")
 
         <div class="card">
             <div class="card-header">

@@ -36,7 +36,7 @@ $destroy = function (modelName $modelName) {
         <li class="breadcrumb-item"><a href="{{ route("modelNames.index") }}">modelName</a></li>
     </x-slot>
 
-    @include("layouts.datatables")
+    @include("components.partials.datatables")
 
     @volt
         <div class="card">

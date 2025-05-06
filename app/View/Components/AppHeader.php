@@ -21,6 +21,6 @@ class AppHeader extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.app-header');
+        return view('components.layouts.app-header');
     }
 }

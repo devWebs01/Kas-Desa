@@ -33,7 +33,7 @@ $destroy = function (user $user) {
 
             <li class="breadcrumb-item"><a href="{{ route("users.index") }}">Akun Pengguna</a></li>
         </x-slot>
-        @include("layouts.datatables")
+        @include("components.partials.datatables")
         @volt
             <div class="card">
                 <div class="card-body">

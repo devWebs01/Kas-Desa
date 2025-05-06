@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-
 class SettingController extends Controller
 {
     public function show()
@@ -21,7 +20,7 @@ class SettingController extends Controller
     {
         $setting = Setting::first();
 
-        if (!$setting) {
+        if (! $setting) {
             return redirect()->back()->withErrors(['setting' => 'Pengaturan tidak ditemukan.']);
         }
 
@@ -50,7 +49,7 @@ class SettingController extends Controller
 
         // 🛠 Simpan tanda tangan sebagai file gambar
         $signatureData = $request->input('signature_data');
-        if (!empty($signatureData)) {
+        if (! empty($signatureData)) {
             $folderPath = 'public/signatures/';
 
             // // Cek dan buat folder jika belum ada
@@ -59,7 +58,7 @@ class SettingController extends Controller
             // }
 
             // Hapus tanda tangan lama jika ada
-            if (!empty($setting->signature) && Storage::exists($setting->signature)) {
+            if (! empty($setting->signature) && Storage::exists($setting->signature)) {
                 Storage::delete($setting->signature);
             }
 
@@ -69,8 +68,8 @@ class SettingController extends Controller
             $imageData = base64_decode($content);
 
             // Buat nama file unik
-            $fileName = uniqid() . '.' . $ext;
-            $filePath = $folderPath . $fileName;
+            $fileName = uniqid().'.'.$ext;
+            $filePath = $folderPath.$fileName;
 
             // Simpan file ke storage
             Storage::put($filePath, $imageData);
@@ -89,12 +88,12 @@ class SettingController extends Controller
     {
         $setting = Setting::first();
 
-        if (!$setting) {
+        if (! $setting) {
             return redirect()->back()->withErrors(['setting' => 'Pengaturan tidak ditemukan.']);
         }
 
         // Hapus file signature jika ada
-        if (!empty($setting->signature) && Storage::exists($setting->signature)) {
+        if (! empty($setting->signature) && Storage::exists($setting->signature)) {
             Storage::delete($setting->signature);
         }
 

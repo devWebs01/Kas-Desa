@@ -36,7 +36,7 @@ $destroy = function (recipient $recipient) {
         <li class="breadcrumb-item"><a href="{{ route("recipients.index") }}">Penerima Dana</a></li>
     </x-slot>
 
-    @include("layouts.datatables")
+    @include("components.partials.datatables")
 
     @volt
         <div class="card">

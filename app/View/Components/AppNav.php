@@ -21,6 +21,6 @@ class AppNav extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.app-nav');
+        return view('components.navigations.app-nav');
     }
 }

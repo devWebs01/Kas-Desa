@@ -22,8 +22,8 @@ state([
         <li class="breadcrumb-item"><a href="#">Riwayat Transaksi</a></li>
     </x-slot>
 
-    @include("layouts.datatables")
-
+    @include("components.partials.datatables")
+    
     @volt
         <div class="card">
             <div class="card-body">

@@ -31,7 +31,7 @@
                box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, .15);
            }
 
-           .dropdown-menu {
+           .ts-wrapper .dropdown-menu {
                width: 100% !important;
                min-width: 100% !important;
                box-sizing: border-box;
@@ -44,14 +44,14 @@
            }
 
            /* Saat item di-hover */
-           .dropdown-menu .option:hover {
+           .ts-wrapper .dropdown-menu .option:hover {
                background-color: #0d6efd !important;
                /* warna biru Bootstrap */
                color: #fff !important;
            }
 
            /* Saat item aktif (selected/focus) */
-           .dropdown-menu .active {
+           .ts-wrapper .dropdown-menu .active {
                background-color: #0d6efd !important;
                color: #fff !important;
            }

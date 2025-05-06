@@ -18,15 +18,15 @@ class TransactionController extends Controller
         $transactions = Transaction::with('recipient')
             ->when(
                 $startDate && $endDate,
-                fn($query) => $query->whereBetween('date', [$startDate, $endDate])
+                fn ($query) => $query->whereBetween('date', [$startDate, $endDate])
             )
             ->when(
                 $filterCategory,
-                fn($query) => $query->where('category', $filterCategory)
+                fn ($query) => $query->where('category', $filterCategory)
             )
             ->when($filterKeyword, function ($query) use ($filterKeyword) {
                 $query->where(function ($q) use ($filterKeyword) {
-                    $q->whereHas('recipient', fn($r) => $r->where('name', 'like', "%{$filterKeyword}%"))
+                    $q->whereHas('recipient', fn ($r) => $r->where('name', 'like', "%{$filterKeyword}%"))
                         ->orWhere('title', 'like', "%{$filterKeyword}%")
                         ->orWhere('invoice', 'like', "%{$filterKeyword}%");
                 });

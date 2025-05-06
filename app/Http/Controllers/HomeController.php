@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 class HomeController extends Controller
 {
     /**
@@ -24,5 +23,4 @@ class HomeController extends Controller
     {
         return view('pages.home');
     }
-
 }
