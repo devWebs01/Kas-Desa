@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +32,9 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/transactions/print', [HomeController::class, 'print'])->name('transactions.print');
+Route::get('/transactions/print', [TransactionController::class, 'print'])->name('transactions.print');
+Route::get('/transactions/{id}/invoice', [TransactionController::class, 'invoice'])->name('transactions.invoice');
 
-Route::get('settings/show', [SettingsController::class, 'show'])->name('settings.show');
-Route::post('settings/update', [SettingsController::class, 'update'])->name('settings.update');
-Route::post('signature/destroy', action: [SettingsController::class, 'destroy'])->name('signature.destroy');
+Route::get('settings/show', [SettingController::class, 'show'])->name('settings.show');
+Route::post('settings/update', [SettingController::class, 'update'])->name('settings.update');
+Route::post('signature/destroy', action: [SettingController::class, 'destroy'])->name('signature.destroy');

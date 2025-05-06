@@ -134,7 +134,7 @@ $resetSearch = function () {
                             @forelse ($this->filteredTransactions as $item)
                                 <tr>
                                     <td>{{ $item->invoice }}</td>
-                                    <td>{{ Str::limit($item->title, 30, '...') }}</td>
+                                    <td>{{ $item->title }}</td>
                                     <td>{{ \Carbon\Carbon::parse($item->date)->format("d M Y") }}</td>
                                     <td class="text-success">
                                         {{ $item->category === "debit" ? formatRupiah($item->amount) : "" }}

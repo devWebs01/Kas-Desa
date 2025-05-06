@@ -124,11 +124,14 @@ $destroy = function (Transaction $transaction) {
                                         <div>
                                             <a href="{{ route("transactions.edit", ["transaction" => $item->id]) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{{ route("transactions.invoice", $item->id) }}" target="blank"
+                                                class="btn btn-sm btn-secondary">Invoice</a>
                                             <button wire:loading.attr="disabled" wire:click="destroy({{ $item->id }})"
                                                 wire:confirm="Apakah kamu yakin ingin menghapus data ini?"
                                                 class="btn btn-sm btn-danger">
                                                 {{ __("Hapus") }}
                                             </button>
+
                                         </div>
                                     </td>
                                 </tr>

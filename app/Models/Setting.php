@@ -14,5 +14,6 @@ class Setting extends Model
         'address',
         'signature',
         'signature_code',
+        'responsible_person',
     ];
 }

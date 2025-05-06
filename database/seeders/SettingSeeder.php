@@ -15,6 +15,7 @@ class SettingSeeder extends Seeder
         Setting::create([
             'name' => 'Kas Adat Kelurahan Dusun Kebun',
             'address' => 'Dusun Kebun, Batang Asam, Tanjung Jabung Barat',
+            'responsible_person' => fake()->name(),
             'signature' => '',
             'signature_code' => '',
         ]);

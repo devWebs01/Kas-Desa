@@ -11,9 +11,9 @@
             <form action="{{ route("settings.update") }}" method="POST">
                 @csrf
 
-                {{-- Nama --}}
+                {{-- Nama Desa --}}
                 <div class="mb-3">
-                    <label class="form-label">Nama</label>
+                    <label class="form-label">Nama Aplikasi</label>
                     <input type="text" name="name" value="{{ old("name", $setting->name) }}"
                         class="form-control @error("name") is-invalid @enderror">
                     @error("name")
@@ -26,6 +26,17 @@
                     <label class="form-label">Alamat</label>
                     <textarea name="address" rows="3" class="form-control @error("address") is-invalid @enderror">{{ old("address", $setting->address) }}</textarea>
                     @error("address")
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Nama Penanggung Jawab --}}
+                <div class="mb-3">
+                    <label class="form-label">Nama Penanggung Jawab</label>
+                    <input type="text" name="responsible_person"
+                        value="{{ old("responsible_person", $setting->responsible_person) }}"
+                        class="form-control @error("responsible_person") is-invalid @enderror">
+                    @error("responsible_person")
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

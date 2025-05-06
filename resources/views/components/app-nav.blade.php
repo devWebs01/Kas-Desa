@@ -29,14 +29,14 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is("home") ? "active" : "" }}" href="{{ route("home") }}">
+                <a class="menu-link {{ Route::is("home") ? "active" : "" }}" href="{{ route("home") }}">
                     <i class='menu-icon tf-icons bx bx-home-smile'></i>
                     <div>Beranda</div>
                 </a>
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is(["users/*", "users"]) ? "active" : "" }}"
+                <a class="menu-link {{ Route::is(["users/*", "users"]) ? "active" : "" }}"
                     href="{{ route("users.index") }}">
                     <i class='menu-icon tf-icons bx bxs-user'></i>
                     <div>Akun Pengguna</div>
@@ -44,7 +44,7 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is(["settings/*", "settings"]) ? "active" : "" }}"
+                <a class="menu-link {{ Route::is(["settings/*", "settings"]) ? "active" : "" }}"
                     href="{{ route("settings.show") }}">
                     <i class='menu-icon tf-icons bx bxs-cog'></i>
                     <div>Pengaturan</div>
@@ -56,7 +56,7 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
+                <a class="menu-link {{ Route::is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
                     href="{{ route("recipients.index") }}">
                     <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
                     <div>Data Penerima</div>
@@ -64,7 +64,7 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is(["transactions.index", "transactions/*"]) ? "active" : "" }}"
+                <a class="menu-link {{ Route::is(["transactions.index", "transactions/*"]) ? "active" : "" }}"
                     href="{{ route("transactions.index") }}">
                     <i class='menu-icon tf-icons bx bx-money'></i>
                     <div>Transaksi</div>
@@ -72,7 +72,7 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ request()->is(["reports.transaction"]) ? "active" : "" }}"
+                <a class="menu-link {{ Route::is(["reports.transaction"]) ? "active" : "" }}"
                     href="{{ route("reports.transaction") }}">
                     <i class='menu-icon tf-icons bx bx-file'></i>
                     <div>Laporan Transaksi</div>

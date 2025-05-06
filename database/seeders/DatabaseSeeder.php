@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'admin@testing.com',
             'identity' => fake()->numerify('##########0000'), // misal: 32030112340000
             'role' => 'ADMIN',
         ]);
