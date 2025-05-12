@@ -138,6 +138,8 @@
         </div>
         <!-- / Layout wrapper -->
 
+        @include("components.partials.payments")
+
         <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
