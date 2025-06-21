@@ -142,7 +142,11 @@ License: https://freebootstrap.net/license
                     <div class="ms-auto w-auto">
 
                         <div class="header-social d-flex align-items-center gap-1">
-                            <a class="btn btn-primary py-2" href="#home">Mulai</a>
+                            @auth
+                                <a class="btn btn-primary py-2" href="{{ route("home") }}">Dashboard</a>
+                            @else
+                                <a class="btn btn-primary py-2" href="#home">Mulai</a>
+                            @endauth
 
                             <button class="fbs__net-navbar-toggler justify-content-center align-items-center ms-auto"
                                 data-bs-toggle="offcanvas" data-bs-target="#fbs__net-navbars"
