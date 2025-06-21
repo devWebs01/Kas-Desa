@@ -75,12 +75,14 @@ License: https://freebootstrap.net/license
                         <!-- If you plan to use an image logo, uncomment this if it is commented-->
 
                         <!-- logo dark-->
-                        <img class="logo dark img-fluid" src="{{ asset("assets_2/images/logo-dark.svg") }}"
-                            alt="FreeBootstrap.net image placeholder">
+                        <div class="logo dark img-fluid">
+                            <i class="bi bi-coin"></i>
+                        </div>
 
                         <!-- logo light-->
-                        <img class="logo light img-fluid" src="{{ asset("assets_2/images/logo-light.svg") }}"
-                            alt="FreeBootstrap.net image placeholder">
+                        <div class="logo light img-fluid">
+                            <i class="bi bi-coin"></i>
+                        </div>
 
                     </a>
                     <!-- End Logo-->
@@ -183,6 +185,28 @@ License: https://freebootstrap.net/license
                 {{ $slot }}
 
             </main>
+
+            <!-- ======= Footer =======-->
+            <footer class="footer pt-5 pb-5">
+                <div class="container">
+
+                    <div class="row credits pt-3">
+                        <div class="col-xl-8 text-center text-xl-start mb-3 mb-xl-0">
+                            &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> Nurkhofifah.
+
+                        </div>
+                        <div
+                            class="col-xl-4 justify-content-start justify-content-xl-end quick-links d-flex flex-column flex-xl-row text-center text-xl-start gap-1">
+                            <a href="#home" target="_blank">{{ $website->name ?? "" }},
+                                {{ $website->address ?? "" }}</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- End Footer-->
         </div>
 
         <!-- ======= Back to Top =======-->
