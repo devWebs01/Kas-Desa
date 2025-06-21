@@ -18,7 +18,7 @@ state([
     "description",
     "recipient_id",
 
-    "phone", // <--- Tambahan
+    "phone" => fn() => $this->showRecipient->phone ?? "", // <--- Tambahan
 ]);
 
 $showRecipient = computed(function () {
