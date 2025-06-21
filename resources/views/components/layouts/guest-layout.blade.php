@@ -101,13 +101,14 @@ License: https://freebootstrap.net/license
                                 <a class="logo-link" id="fbs__net-navbarsLabel" href="index.html">
 
                                     <!-- logo dark-->
-                                    <img class="logo dark img-fluid" src="{{ asset("assets_2/images/logo-dark.svg") }}"
-                                        alt="FreeBootstrap.net image placeholder">
+                                    <div class="logo dark img-fluid">
+                                        <i class="bi bi-coin fs-1"></i>
+                                    </div>
 
                                     <!-- logo light-->
-                                    <img class="logo light img-fluid"
-                                        src="{{ asset("assets_2/images/logo-light.svg") }}"
-                                        alt="FreeBootstrap.net image placeholder">
+                                    <div class="logo light img-fluid">
+                                        <i class="bi bi-coin fs-1"></i>
+                                    </div>
                                 </a>
 
                             </div>

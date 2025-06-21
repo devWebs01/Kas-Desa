@@ -28,7 +28,7 @@
                     <div class="hero-img">
 
                         <img class="img-main img-fluid rounded-4"
-                            src="{{ asset("assets_2/images/hero-img-1-min.jpg") }}" alt="Hero Image" data-aos="fade-in"
+                            src="{{ asset("assets_2/images/hero.png") }}" alt="Hero Image" data-aos="fade-in"
                             data-aos-delay="500">
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="img-wrap position-relative">
-                        <img class="img-fluid rounded-4" src="{{ asset("assets_2/images/about_2-min.jpg") }}"
+                        <img class="img-fluid rounded-4" src="{{ asset("assets_2/images/about.png") }}"
                             alt="Ilustrasi Kas Adat" data-aos="fade-up" data-aos-delay="0">
                         <div class="mission-statement p-4 rounded-4 d-flex gap-4" data-aos="fade-up"
                             data-aos-delay="100">
