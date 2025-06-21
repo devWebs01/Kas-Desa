@@ -17,8 +17,14 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(20)->create();
 
         \App\Models\User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Admin User',
             'email' => 'admin@testing.com',
+            'identity' => fake()->numerify('##########0000'), // misal: 32030112340000
+            'role' => 'ADMIN',
+        ]);
+        \App\Models\User::factory()->create([
+            'name' => 'Bendahara User',
+            'email' => 'bendahara@testing.com',
             'identity' => fake()->numerify('##########0000'), // misal: 32030112340000
             'role' => 'ADMIN',
         ]);

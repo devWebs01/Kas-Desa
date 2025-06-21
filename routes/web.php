@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TransactionController;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,13 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return view('pages.welcome');
+    $website = Setting::first();
 
-    if (Auth::check()) {
-        return redirect('home');
-    }
-
-    return redirect('login'); // halaman publik
+    return view('pages.welcome', compact('website'));
 
 });
 

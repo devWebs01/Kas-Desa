@@ -13,7 +13,7 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         Setting::create([
-            'name' => 'Kas Adat Kelurahan Dusun Kebun',
+            'name' => 'Dusun Kebun',
             'address' => 'Dusun Kebun, Batang Asam, Tanjung Jabung Barat',
             'responsible_person' => fake()->name(),
             'signature' => '',
