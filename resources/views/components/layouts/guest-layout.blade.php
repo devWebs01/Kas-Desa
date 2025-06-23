@@ -68,7 +68,7 @@ License: https://freebootstrap.net/license
                 <div class="container d-flex align-items-center justify-content-between">
 
                     <!-- Start Logo-->
-                    <a class="navbar-brand w-auto" href="index.html">
+                    <a class="navbar-brand w-auto" href="/">
                         <!-- If you use a text logo, uncomment this if it is commented-->
                         <!-- Vertex-->
 
@@ -98,7 +98,7 @@ License: https://freebootstrap.net/license
                                 <!-- h5#fbs__net-navbarsLabel.offcanvas-title Vertex-->
 
                                 <!-- If you plan to use an image logo, uncomment this if it is commented-->
-                                <a class="logo-link" id="fbs__net-navbarsLabel" href="index.html">
+                                <a class="logo-link" id="fbs__net-navbarsLabel" href="/">
 
                                     <!-- logo dark-->
                                     <div class="logo dark img-fluid">
@@ -146,7 +146,7 @@ License: https://freebootstrap.net/license
                             @auth
                                 <a class="btn btn-primary py-2" href="{{ route("home") }}">Dashboard</a>
                             @else
-                                <a class="btn btn-primary py-2" href="#home">Mulai</a>
+                                <a class="btn btn-primary py-2" href="{{ Route('login')}}">Login</a>
                             @endauth
 
                             <button class="fbs__net-navbar-toggler justify-content-center align-items-center ms-auto"

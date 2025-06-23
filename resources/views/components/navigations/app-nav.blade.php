@@ -35,7 +35,7 @@ state([
                 </a>
             </li>
 
-            <li class="menu-item">
+            <li class="menu-item {{ Auth()->User()->role === 'ADMIN' ? : 'd-none' }}">
                 <a class="menu-link {{ Route::is(["users/*", "users"]) ? "active" : "" }}"
                     href="{{ route("users.index") }}">
                     <i class='menu-icon tf-icons bx bxs-user'></i>
