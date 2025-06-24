@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request; // Pastikan untuk mengimpor Request dari Illuminate
 
 class LoginController extends Controller
 {
@@ -38,14 +39,14 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-     /**
+    /**
      * Handle the user after authentication.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function authenticated(Request $request, $user)
+    protected function authenticated(Request $request, $user) // Menggunakan Illuminate\Http\Request
     {
         if (in_array($user->role, ['ADMIN', 'BENDAHARA'])) {
             return redirect('/home');
