@@ -60,7 +60,7 @@
 
         @stack("styles")
 
-        @vite([])
+       
     </head>
 
     <body>

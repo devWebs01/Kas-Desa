@@ -55,7 +55,7 @@ License: https://freebootstrap.net/license
             }
         </style>
 
-        @vite([])
+      
     </head>
 
     <body>
