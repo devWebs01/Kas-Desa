@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Bendahara User',
             'email' => 'bendahara@testing.com',
             'identity' => fake()->numerify('##########0000'), // misal: 32030112340000
-            'role' => 'ADMIN',
+            'role' => 'BENDAHARA',
         ]);
 
         $this->call([
