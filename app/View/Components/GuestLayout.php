@@ -2,10 +2,10 @@
 
 namespace App\View\Components;
 
-use Closure;
 use App\Models\Setting;
-use Illuminate\View\Component;
+use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
 
 class GuestLayout extends Component
 {
@@ -23,6 +23,7 @@ class GuestLayout extends Component
     public function render(): View|Closure|string
     {
         $website = Setting::first();
-        return view('components.layouts.guest-layout', compact("website"));
+
+        return view('components.layouts.guest-layout', compact('website'));
     }
 }

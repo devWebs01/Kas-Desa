@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\user;
+use App\Models\User;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use function Livewire\Volt\{state, rules, usesFileUploads};
 use function Laravel\Folio\name;

@@ -42,7 +42,6 @@ class LoginController extends Controller
     /**
      * Handle the user after authentication.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
      * @return \Illuminate\Http\RedirectResponse
      */
