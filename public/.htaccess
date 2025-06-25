@@ -1,21 +1,59 @@
+# <IfModule mod_rewrite.c>
+#     <IfModule mod_negotiation.c>
+#         Options -MultiViews -Indexes
+#     </IfModule>
+
+#     RewriteEngine On
+
+#     # Handle Authorization Header
+#     RewriteCond %{HTTP:Authorization} .
+#     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+#     # Redirect Trailing Slashes If Not A Folder...
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_URI} (.+)/$
+#     RewriteRule ^ %1 [L,R=301]
+
+#     # Send Requests To Front Controller...
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteRule ^ index.php [L]
+# </IfModule>
+
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
+    Options +FollowSymLinks
     RewriteEngine On
 
-    # Handle Authorization Header
+    # Lindungi file sensitif
+    <FilesMatch "^(\.env|\.env\.example|\.git|composer\.(json|lock)|artisan|server\.php|phpunit\.xml)$">
+        Require all denied
+    </FilesMatch>
+
+    # Handle Authorization Header (untuk Laravel Sanctum / Passport)
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # Redirect trailing slash ke non-slash URL (kecuali folder)
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Kirim semua request ke index.php (router Laravel)
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Jangan tampilkan listing direktori (fallback)
+Options -Indexes
+
+# Blok akses ke .env secara eksplisit (tambahan backup jika mod_rewrite mati)
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>

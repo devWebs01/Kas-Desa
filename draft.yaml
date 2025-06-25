@@ -4,7 +4,7 @@ models:
     phone: string
     relationships:
       hasMany: Transaction
-  
+
   Transaction:
     title: string
     category: enum:credit,debit
@@ -13,7 +13,7 @@ models:
     date: date
     description: longtext
     recipient_id: foreign:recipients
-  
+
   Setting:
     name: string
     address: longtext
@@ -22,3 +22,5 @@ seeders:
   Recipient,
   Transaction,
   Setting,
+
+# base64:XZLukJ8fUkrYwPgVbtlaH0Aw6sVvagYwhGzgeDf3QBE=
