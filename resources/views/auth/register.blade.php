@@ -56,12 +56,10 @@
                 autocomplete="new-password">
         </div>
 
-        <div class="mb-0">
-            <div class=" offset-md-4">
-                <button type="submit" class="btn btn-primary">
-                    {{ __("Register") }}
-                </button>
-            </div>
+        <div class="mb-0 d-grid">
+            <button type="submit" class="btn btn-primary">
+                {{ __("Register") }}
+            </button>
         </div>
     </form>
 </x-auth-layout>

@@ -31,7 +31,9 @@
                         <div class="col-lg-8 mx-auto">
                             <span class="text-muted">Selamat Datang</span>
                             <h2 class="display-5 fw-bold">Masuk ke Akun Anda</h2>
-                            <p class="lead">Silakan masukkan email dan kata sandi untuk mengakses sistem. </p>
+                            <p class="lead">
+                                {{ $text ?? "Silakan masukkan email dan kata sandi untuk mengakses sistem." }}
+                            </p>
                             {{ $slot }}
                         </div>
                     </div>
