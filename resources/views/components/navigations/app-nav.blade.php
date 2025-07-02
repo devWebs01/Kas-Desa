@@ -35,21 +35,23 @@ state([
                 </a>
             </li>
 
-            <li class="menu-item {{ Auth()->User()->role === 'ADMIN' ? : 'd-none' }}">
-                <a class="menu-link {{ Route::is(["users/*", "users"]) ? "active" : "" }}"
-                    href="{{ route("users.index") }}">
-                    <i class='menu-icon tf-icons bx bxs-user'></i>
-                    <div>Akun Pengguna</div>
-                </a>
-            </li>
+            @if (Auth()->User()->role === "ADMIN")
+                <li class="menu-item ">
+                    <a class="menu-link {{ Route::is(["users/*", "users"]) ? "active" : "" }}"
+                        href="{{ route("users.index") }}">
+                        <i class='menu-icon tf-icons bx bxs-user'></i>
+                        <div>Akun Pengguna</div>
+                    </a>
+                </li>
 
-            <li class="menu-item">
-                <a class="menu-link {{ Route::is(["settings/*", "settings"]) ? "active" : "" }}"
-                    href="{{ route("settings.show") }}">
-                    <i class='menu-icon tf-icons bx bxs-cog'></i>
-                    <div>Pengaturan</div>
-                </a>
-            </li>
+                <li class="menu-item">
+                    <a class="menu-link {{ Route::is(["settings/*", "settings"]) ? "active" : "" }}"
+                        href="{{ route("settings.show") }}">
+                        <i class='menu-icon tf-icons bx bxs-cog'></i>
+                        <div>Pengaturan</div>
+                    </a>
+                </li>
+            @endif
 
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Transaksi</span>

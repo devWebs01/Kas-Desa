@@ -14,18 +14,11 @@ $totalDebit = computed(fn() => Transaction::where("category", "debit")->sum("amo
 $totalCredit = computed(fn() => Transaction::where("category", "credit")->sum("amount"));
 
 $monthlyTotals = computed(function () {
-    return Transaction::selectRaw("DATE_FORMAT(date, '%Y-%m') as month, SUM(amount) as total")
-        ->groupBy("month")
-        ->orderBy("month")
-        ->pluck("total", "month")
-        ->toArray();
+    return Transaction::selectRaw("DATE_FORMAT(date, '%Y-%m') as month, SUM(amount) as total")->groupBy("month")->orderBy("month")->pluck("total", "month")->toArray();
 });
 
 $monthlyBalances = computed(function () {
-    $transactions = Transaction::selectRaw("DATE_FORMAT(date, '%Y-%m') as month, category, SUM(amount) as total")
-        ->groupBy("month", "category")
-        ->get()
-        ->groupBy("month");
+    $transactions = Transaction::selectRaw("DATE_FORMAT(date, '%Y-%m') as month, category, SUM(amount) as total")->groupBy("month", "category")->get()->groupBy("month");
 
     $saldo = 0;
     $result = [];
@@ -42,19 +35,11 @@ $monthlyBalances = computed(function () {
 });
 
 $topRecipients = computed(function () {
-    return Recipient::withCount("transactions")
-        ->withSum("transactions", "amount")
-        ->orderByDesc("transactions_count")
-        ->limit(5)
-        ->get();
+    return Recipient::withCount("transactions")->withSum("transactions", "amount")->orderByDesc("transactions_count")->limit(5)->get();
 });
 
 $balancePerDay = computed(function () {
-    return Transaction::select(
-        DB::raw("DATE(date) as day"),
-        DB::raw("SUM(CASE WHEN category = 'debit' THEN amount ELSE 0 END) as total_debit"),
-        DB::raw("SUM(CASE WHEN category = 'credit' THEN amount ELSE 0 END) as total_credit")
-    )
+    return Transaction::select(DB::raw("DATE(date) as day"), DB::raw("SUM(CASE WHEN category = 'debit' THEN amount ELSE 0 END) as total_debit"), DB::raw("SUM(CASE WHEN category = 'credit' THEN amount ELSE 0 END) as total_credit"))
         ->groupBy("day")
         ->orderBy("day", "asc")
         ->get()
@@ -75,6 +60,8 @@ $balancePerDay = computed(function () {
     </x-slot>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @include("components.partials.datatables")
 
     @volt
         <div class="row g-4">
@@ -117,7 +104,7 @@ $balancePerDay = computed(function () {
             <div class="col-lg">
                 <div class="card">
                     <div class="card-header text-center fw-bold">Penerima Teraktif</div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table class="table table-sm table-bordered text-center text-nowrap">
                             <thead>
                                 <tr>
@@ -130,7 +117,11 @@ $balancePerDay = computed(function () {
                                 @foreach ($this->topRecipients as $recipient)
                                     <tr>
                                         <td>{{ $recipient->name }}</td>
-                                        <td>{{ $recipient->transactions_count }}</td>
+                                        <td><span class="badge bg-primary">
+                                                {{ $recipient->transactions_count }}
+                                                Transaksi
+                                            </span>
+                                        </td>
                                         <td>{{ formatRupiah($recipient->transactions_sum_amount) }}</td>
                                     </tr>
                                 @endforeach
