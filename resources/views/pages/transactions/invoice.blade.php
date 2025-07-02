@@ -47,7 +47,6 @@
             }
         </style>
 
-        @vite([])
     </head>
 
     <body onclick="window.print()">
