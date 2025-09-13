@@ -1,0 +1,8 @@
+version: "3"
+services:
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password

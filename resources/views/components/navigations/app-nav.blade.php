@@ -4,14 +4,14 @@ use App\Models\Setting;
 use function Livewire\Volt\{state};
 
 state([
-    "setting" => fn() => Setting::first() ?? "",
+    'setting' => fn() => Setting::first() ?? '',
 ]);
 ?>
 
 @volt
     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-            <a href="{{ route("home") }}" class="app-brand-link">
+            <a href="{{ route('home') }}" class="app-brand-link">
                 <span class="demo menu-text fw-bolder">{{ $setting->name }}</span>
             </a>
 
@@ -29,24 +29,24 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ Route::is("home") ? "active" : "" }}" href="{{ route("home") }}">
+                <a class="menu-link {{ Route::is('home') ? 'text-primary fw-bold' : '' }}" href="{{ route('home') }}">
                     <i class='menu-icon tf-icons bx bx-home-smile'></i>
                     <div>Beranda</div>
                 </a>
             </li>
 
-            @if (Auth()->User()->role === "ADMIN")
+            @if (Auth()->User()->role === 'ADMIN')
                 <li class="menu-item ">
-                    <a class="menu-link {{ Route::is(["users/*", "users"]) ? "active" : "" }}"
-                        href="{{ route("users.index") }}">
+                    <a class="menu-link {{ Route::is(['users.*', 'users']) ? 'text-primary fw-bold' : '' }}"
+                        href="{{ route('users.index') }}">
                         <i class='menu-icon tf-icons bx bxs-user'></i>
                         <div>Akun Pengguna</div>
                     </a>
                 </li>
 
                 <li class="menu-item">
-                    <a class="menu-link {{ Route::is(["settings/*", "settings"]) ? "active" : "" }}"
-                        href="{{ route("settings.show") }}">
+                    <a class="menu-link {{ Route::is(['settings.*', 'settings']) ? 'text-primary fw-bold' : '' }}"
+                        href="{{ route('settings.show') }}">
                         <i class='menu-icon tf-icons bx bxs-cog'></i>
                         <div>Pengaturan</div>
                     </a>
@@ -58,24 +58,24 @@ state([
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ Route::is(["recipients.index", "recipients.index/*"]) ? "active" : "" }}"
-                    href="{{ route("recipients.index") }}">
+                <a class="menu-link {{ Route::is(['recipients.index', 'recipients.index.*']) ? 'text-primary fw-bold' : '' }}"
+                    href="{{ route('recipients.index') }}">
                     <i class='menu-icon tf-icons bx bxs-user-rectangle'></i>
                     <div>Data Penerima</div>
                 </a>
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ Route::is(["transactions.index", "transactions/*"]) ? "active" : "" }}"
-                    href="{{ route("transactions.index") }}">
+                <a class="menu-link {{ Route::is(['transactions.index', 'transactions.*']) ? 'text-primary fw-bold' : '' }}"
+                    href="{{ route('transactions.index') }}">
                     <i class='menu-icon tf-icons bx bx-money'></i>
                     <div>Transaksi</div>
                 </a>
             </li>
 
             <li class="menu-item">
-                <a class="menu-link {{ Route::is(["reports.transaction"]) ? "active" : "" }}"
-                    href="{{ route("reports.transaction") }}">
+                <a class="menu-link {{ Route::is(['reports.transaction']) ? 'text-primary fw-bold' : '' }}"
+                    href="{{ route('reports.transaction') }}">
                     <i class='menu-icon tf-icons bx bx-file'></i>
                     <div>Laporan Transaksi</div>
                 </a>
